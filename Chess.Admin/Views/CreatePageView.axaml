@@ -1,60 +1,60 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Chess.Admin.Views.CreatePageView">
-	<Design.DataContext>
-		<vm:CreatePageViewModel/>
-	</Design.DataContext>
-	
-	<UserControl.Resources>
-		<SolidColorBrush x:Key="ItemForeground">Black</SolidColorBrush>
-	</UserControl.Resources>
+<UserControl
+    x:Class="Chess.Admin.Views.CreatePageView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
+    d:DesignHeight="570"
+    d:DesignWidth="750"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:CreatePageViewModel />
+    </Design.DataContext>
 
-	<UserControl.Styles>
-		<Style Selector="TextBlock.Header">
-			<Setter Property="FontSize" Value="12" />
-			<Setter Property="Foreground" Value="Black" />
-			<Setter Property="FontWeight" Value="DemiBold" />
-			<Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="VerticalAlignment" Value="Bottom" />
-		</Style>
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="ItemForeground">Black</SolidColorBrush>
+    </UserControl.Resources>
 
-		<Style Selector="TextBlock.Message">
-			<Setter Property="FontSize" Value="12" />
-			<Setter Property="Foreground" Value="Black" />
-			<Setter Property="FontWeight" Value="DemiBold" />
-			<Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="VerticalAlignment" Value="Center" />
-		</Style>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.Header">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
 
-		<Style Selector="ComboBox">
-			<Setter Property="HorizontalAlignment" Value="Center" />
-		</Style>
+        <Style Selector="ComboBox.Combo">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
 
-		<Style Selector="ComboBoxItem">
-			<Setter Property="Foreground" Value="{DynamicResource ItemForeground}" />
-		</Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource ItemForeground}" />
+        </Style>
 
-		<Style Selector="Button">
-			<Setter Property="Width" Value="100" />
-			<Setter Property="Height" Value="30" />
-			<Setter Property="Margin" Value="0 10" />
-			<Setter Property="FontSize" Value="12" />
-			<Setter Property="FontWeight" Value="DemiBold" />
-			<Setter Property="Foreground" Value="Black" />
-		</Style>
-	</UserControl.Styles>
+        <Style Selector="Button">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Margin" Value="0 10" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="#e3e3e3" />
+            <Setter Property="BorderBrush" Value="Black" />
+        </Style>
+    </UserControl.Styles>
 
-	<Grid
+    <Grid
         Margin="10"
         ColumnDefinitions="300 * * * * *"
-        RowDefinitions="50 30 30 30 20 30 30 30 30 30">
+        RowDefinitions="50 30 30 30 20 30 250">
 
-		<!--  Create Block  -->
-		<TextBlock
+        <!--  Create Block  -->
+        <TextBlock
             Grid.Row="0"
             Grid.ColumnSpan="6"
             HorizontalAlignment="Center"
@@ -63,100 +63,128 @@
             FontWeight="Bold"
             Text="Сформировать задание" />
 
-		<TextBlock
+        <TextBlock
             Grid.Row="1"
             Grid.Column="0"
             Classes="Header"
             Text="Дата" />
-		<TextBlock
+        <TextBlock
             Grid.Row="1"
             Grid.Column="1"
             Classes="Header"
             Text="Стратегия" />
-		<TextBlock
+        <TextBlock
             Grid.Row="1"
             Grid.Column="2"
             Classes="Header"
             Text="Тактика" />
-		<TextBlock
+        <TextBlock
             Grid.Row="1"
             Grid.Column="3"
             Classes="Header"
             Text="Счет" />
-		<TextBlock
+        <TextBlock
             Grid.Row="1"
             Grid.Column="4"
             Classes="Header"
             Text="Техника" />
-		<TextBlock
+        <TextBlock
             Grid.Row="1"
             Grid.Column="5"
             Classes="Header"
             Text="Оценка" />
-		<DatePicker Margin="0" Grid.Row="2" Grid.Column="0"/>
-		<ComboBox
+        <DatePicker
+            Grid.Row="2"
+            Grid.Column="0"
+            Height="32"
+            Margin="0"
+            Padding="0,1"
+            BorderBrush="Black"
+            CornerRadius="0" />
+        <ComboBox
             Grid.Row="2"
             Grid.Column="1"
+            Classes="Combo"
             SelectedIndex="-1">
-			<ComboBox.Items>1</ComboBox.Items>
-			<ComboBox.Items>2</ComboBox.Items>
-			<ComboBox.Items>3</ComboBox.Items>
-			<ComboBox.Items>4</ComboBox.Items>
-			<ComboBox.Items>5</ComboBox.Items>
-		</ComboBox>
-		<ComboBox
+            <ComboBox.Items>1</ComboBox.Items>
+            <ComboBox.Items>2</ComboBox.Items>
+            <ComboBox.Items>3</ComboBox.Items>
+            <ComboBox.Items>4</ComboBox.Items>
+            <ComboBox.Items>5</ComboBox.Items>
+        </ComboBox>
+        <ComboBox
             Grid.Row="2"
             Grid.Column="2"
+            Classes="Combo"
             SelectedIndex="-1">
-			<ComboBox.Items>1</ComboBox.Items>
-			<ComboBox.Items>2</ComboBox.Items>
-			<ComboBox.Items>3</ComboBox.Items>
-			<ComboBox.Items>4</ComboBox.Items>
-			<ComboBox.Items>5</ComboBox.Items>
-		</ComboBox>
-		<ComboBox
+            <ComboBox.Items>1</ComboBox.Items>
+            <ComboBox.Items>2</ComboBox.Items>
+            <ComboBox.Items>3</ComboBox.Items>
+            <ComboBox.Items>4</ComboBox.Items>
+            <ComboBox.Items>5</ComboBox.Items>
+        </ComboBox>
+        <ComboBox
             Grid.Row="2"
             Grid.Column="3"
+            Classes="Combo"
             SelectedIndex="-1">
-			<ComboBox.Items>1</ComboBox.Items>
-			<ComboBox.Items>2</ComboBox.Items>
-			<ComboBox.Items>3</ComboBox.Items>
-			<ComboBox.Items>4</ComboBox.Items>
-			<ComboBox.Items>5</ComboBox.Items>
-		</ComboBox>
-		<ComboBox
+            <ComboBox.Items>1</ComboBox.Items>
+            <ComboBox.Items>2</ComboBox.Items>
+            <ComboBox.Items>3</ComboBox.Items>
+            <ComboBox.Items>4</ComboBox.Items>
+            <ComboBox.Items>5</ComboBox.Items>
+        </ComboBox>
+        <ComboBox
             Grid.Row="2"
             Grid.Column="4"
+            Classes="Combo"
             SelectedIndex="-1">
-			<ComboBox.Items>1</ComboBox.Items>
-			<ComboBox.Items>2</ComboBox.Items>
-			<ComboBox.Items>3</ComboBox.Items>
-			<ComboBox.Items>4</ComboBox.Items>
-			<ComboBox.Items>5</ComboBox.Items>
-		</ComboBox>
-		<ComboBox
+            <ComboBox.Items>1</ComboBox.Items>
+            <ComboBox.Items>2</ComboBox.Items>
+            <ComboBox.Items>3</ComboBox.Items>
+            <ComboBox.Items>4</ComboBox.Items>
+            <ComboBox.Items>5</ComboBox.Items>
+        </ComboBox>
+        <ComboBox
             Grid.Row="2"
             Grid.Column="5"
+            Classes="Combo"
             SelectedIndex="-1">
-			<ComboBox.Items>1</ComboBox.Items>
-			<ComboBox.Items>2</ComboBox.Items>
-			<ComboBox.Items>3</ComboBox.Items>
-			<ComboBox.Items>4</ComboBox.Items>
-			<ComboBox.Items>5</ComboBox.Items>
-		</ComboBox>
+            <ComboBox.Items>1</ComboBox.Items>
+            <ComboBox.Items>2</ComboBox.Items>
+            <ComboBox.Items>3</ComboBox.Items>
+            <ComboBox.Items>4</ComboBox.Items>
+            <ComboBox.Items>5</ComboBox.Items>
+        </ComboBox>
 
-		<TextBlock
+        <TextBlock
             Grid.Row="3"
             Grid.Column="0"
             Classes="Header"
             Text="Количество упражнений" />
-		<StackPanel 
-			Grid.Row="4"
-            Grid.Column="0">
-		<Button Content="Создать" />
-			
-		</StackPanel>
 
-	</Grid>
-  
+        <NumericUpDown
+			HorizontalContentAlignment="Center"
+            Grid.Row="4"
+            Grid.Column="0"
+            BorderBrush="Black"
+			Height="32"
+			Padding="0 1"
+            FormatString="0"			
+            Minimum="0" />
+        <Button
+            Grid.Row="4"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Width="260"
+            Content="Создать" />
+
+        <Border Grid.Row="6" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="Black" BorderThickness="1">
+			<StackPanel>
+				<TextBlock HorizontalAlignment="Center">Список FEN в задании</TextBlock>
+				<ListBox></ListBox>
+			</StackPanel>
+
+        </Border>
+    </Grid>
 </UserControl>
