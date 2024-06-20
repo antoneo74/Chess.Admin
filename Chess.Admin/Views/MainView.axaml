@@ -1,0 +1,108 @@
+<UserControl
+    x:Class="Chess.Admin.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Chess.Admin.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="10 0 0 0" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#f2f2f2" />
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+        </Style>
+
+        <Style Selector="Svg">
+            <Setter Property="Width" Value="35" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="30 *">
+        <StackPanel
+            Grid.Row="0"
+            Margin="10,5"
+            Orientation="Horizontal">
+            <Svg Width="20" Path="/Assets/king.svg" />
+            <TextBlock Text="Chess.Admin v1.0" />
+        </StackPanel>
+
+        <SplitView
+            Grid.Row="1"
+            Background="White"
+            CompactPaneLength="50"
+            DisplayMode="CompactOverlay"
+            IsPaneOpen="{Binding IsOpen}"
+            OpenPaneLength="250"
+            PaneBackground="#f2f2f2"
+            PanePlacement="Left">
+            <SplitView.Pane>
+                <StackPanel Margin="5,30,0,0">
+                    <Button Command="{Binding OpenPanel}">
+                        <Button.Content>
+                            <Svg Path="/Assets/main.svg" />
+                        </Button.Content>
+                    </Button>
+
+                    <StackPanel Margin="0,30,0,0" Orientation="Horizontal">
+                        <Button Command="{Binding ContextPageCommand}" CommandParameter="0">
+                            <Button.Content>
+                                <Svg Path="/Assets/add.svg" />
+                            </Button.Content>
+                        </Button>
+                        <TextBlock Text="Добавить FEN" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                        <Button Command="{Binding ContextPageCommand}" CommandParameter="1">
+                            <Button.Content>
+                                <Svg Path="/Assets/create.svg" />
+                            </Button.Content>
+                        </Button>
+                        <TextBlock Text="Создать задание" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                        <Button Command="{Binding ContextPageCommand}" CommandParameter="2">
+                            <Button.Content>
+                                <Svg Path="/Assets/check.svg" />
+                            </Button.Content>
+                        </Button>
+                        <TextBlock Text="Проверить задание" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                        <Button Command="{Binding ContextPageCommand}" CommandParameter="3">
+                            <Button.Content>
+                                <Svg Path="/Assets/statistic.svg" />
+                            </Button.Content>
+                        </Button>
+                        <TextBlock Text="Статистика" />
+                    </StackPanel>
+                </StackPanel>
+
+            </SplitView.Pane>
+
+            <ContentControl Content="{Binding CurrentPage}" />
+
+        </SplitView>
+    </Grid>
+</UserControl>
