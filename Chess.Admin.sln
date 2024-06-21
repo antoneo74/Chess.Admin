@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Admin", "Chess.Admin\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Admin.Desktop", "Chess.Admin.Desktop\Chess.Admin.Desktop.csproj", "{2CFF1753-747C-4043-8CA7-24A161FF4182}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessDB", "ChessDB\ChessDB.csproj", "{2478D31E-A1E2-471C-8FA6-7F02F6DB574A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2CFF1753-747C-4043-8CA7-24A161FF4182}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CFF1753-747C-4043-8CA7-24A161FF4182}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CFF1753-747C-4043-8CA7-24A161FF4182}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2478D31E-A1E2-471C-8FA6-7F02F6DB574A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2478D31E-A1E2-471C-8FA6-7F02F6DB574A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2478D31E-A1E2-471C-8FA6-7F02F6DB574A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2478D31E-A1E2-471C-8FA6-7F02F6DB574A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
