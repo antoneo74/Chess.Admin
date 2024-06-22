@@ -10,7 +10,7 @@ namespace Chess.Admin.Converter
         {
             if (s == null) return null;
 
-            if (s.Contains("Успех")) return new SolidColorBrush(Colors.Green);
+            if (s.ToLower().Contains("успешно")) return new SolidColorBrush(Colors.Green);
 
             return new SolidColorBrush(Colors.Red);
         });

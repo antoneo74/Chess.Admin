@@ -2,10 +2,10 @@
     x:Class="Chess.Admin.Views.AddPageView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Chess.Admin.Converter;assembly=Chess.Admin"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
-	xmlns:conv="clr-namespace:Chess.Admin.Converter;assembly=Chess.Admin"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -27,22 +27,21 @@
         </Style>
 
         <Style Selector="TextBlock.Message">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontWeight" Value="DemiBold" />
             <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-		<Style Selector="TextBox">
-			<Setter Property="BorderBrush" Value="Black" />
-		</Style>
+        <Style Selector="TextBox">
+            <Setter Property="BorderBrush" Value="Black" />
+        </Style>
 
         <Style Selector="ComboBox.Combo">
-			<Setter Property="Height" Value="30"/>
-			<Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="HorizontalAlignment" Value="Center" />
-			<Setter Property="Padding" Value="5"/>
+            <Setter Property="Padding" Value="5" />
         </Style>
 
         <Style Selector="ComboBoxItem">
@@ -56,8 +55,8 @@
             <Setter Property="FontSize" Value="12" />
             <Setter Property="FontWeight" Value="DemiBold" />
             <Setter Property="Foreground" Value="Black" />
-			<Setter Property="Background" Value="#e3e3e3"/>
-			<Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Background" Value="#e3e3e3" />
+            <Setter Property="BorderBrush" Value="Black" />
         </Style>
     </UserControl.Styles>
 
@@ -106,15 +105,16 @@
             Grid.Column="5"
             Classes="Header"
             Text="Оценка" />
-        <TextBox Margin="0 0 5 0"
+        <TextBox
             Grid.Row="2"
             Grid.Column="0"
-			Text="{Binding Fen}"
+            Margin="0,0,5,0"
+            Text="{Binding Fen}"
             Watermark="Введи FEN" />
         <ComboBox
-			Classes="Combo"
             Grid.Row="2"
-            Grid.Column="1" 
+            Grid.Column="1"
+            Classes="Combo"
             SelectedIndex="{Binding Strategy}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
@@ -122,10 +122,10 @@
             <ComboBox.Items>4</ComboBox.Items>
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
-		<ComboBox
-			Classes="Combo"
+        <ComboBox
             Grid.Row="2"
             Grid.Column="2"
+            Classes="Combo"
             SelectedIndex="{Binding Tactics}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
@@ -133,10 +133,10 @@
             <ComboBox.Items>4</ComboBox.Items>
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
-		<ComboBox
-			Classes="Combo"
+        <ComboBox
             Grid.Row="2"
             Grid.Column="3"
+            Classes="Combo"
             SelectedIndex="{Binding Score}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
@@ -144,21 +144,21 @@
             <ComboBox.Items>4</ComboBox.Items>
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
-		<ComboBox
-			Classes="Combo"
+        <ComboBox
             Grid.Row="2"
             Grid.Column="4"
-            SelectedIndex="{Binding Techique}">
+            Classes="Combo"
+            SelectedIndex="{Binding Technique}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
             <ComboBox.Items>4</ComboBox.Items>
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
-		<ComboBox
-			Classes="Combo"
+        <ComboBox
             Grid.Row="2"
             Grid.Column="5"
+            Classes="Combo"
             SelectedIndex="{Binding Grade}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
@@ -167,22 +167,24 @@
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
 
-		<StackPanel Orientation="Horizontal"
+        <StackPanel
             Grid.Row="3"
-            Grid.Column="0">
+            Grid.Column="0"
+            Orientation="Horizontal">
             <Button Command="{Binding Add}" Content="Добавить" />
-			<Button Command="{Binding ClearAdd}" Margin="10" Content="Очистить"/>
-			
-		</StackPanel>
+            <Button
+                Margin="10"
+                Command="{Binding ClearAdd}"
+                Content="Очистить" />
+        </StackPanel>
 
         <TextBlock
             Grid.Row="3"
             Grid.Column="1"
             Grid.ColumnSpan="5"
             Classes="Message"
-            Text="{Binding AddMessage}"
-			FontSize="14"
-			Foreground="{Binding AddMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"/>
+            Foreground="{Binding AddMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
+            Text="{Binding AddMessage}" />
 
         <!--  Edit Block  -->
         <TextBlock
@@ -227,23 +229,14 @@
         <TextBox
             Grid.Row="7"
             Grid.Column="0"
+			Margin="0,0,5,0"
+			Text="{Binding FenEdit}"
             Watermark="Введи FEN" />
         <ComboBox
-			Classes="Combo"
             Grid.Row="7"
             Grid.Column="1"
-            SelectedIndex="">
-			<ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-		<ComboBox
-			Classes="Combo"
-            Grid.Row="7"
-            Grid.Column="2"
-            SelectedIndex="-1">
+            Classes="Combo"
+            SelectedIndex="{Binding StrategyEdit}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -251,32 +244,43 @@
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
         <ComboBox
-			Classes="Combo"
+            Grid.Row="7"
+            Grid.Column="2"
+            Classes="Combo"
+            SelectedIndex="{Binding TacticsEdit}">
+            <ComboBox.Items>1</ComboBox.Items>
+            <ComboBox.Items>2</ComboBox.Items>
+            <ComboBox.Items>3</ComboBox.Items>
+            <ComboBox.Items>4</ComboBox.Items>
+            <ComboBox.Items>5</ComboBox.Items>
+        </ComboBox>
+        <ComboBox
             Grid.Row="7"
             Grid.Column="3"
-            SelectedIndex="-1">
+            Classes="Combo"
+            SelectedIndex="{Binding ScoreEdit}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
             <ComboBox.Items>4</ComboBox.Items>
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
-		<ComboBox
-			Classes="Combo"
+        <ComboBox
             Grid.Row="7"
             Grid.Column="4"
-            SelectedIndex="-1">
+            Classes="Combo"
+            SelectedIndex="{Binding TechniqueEdit}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
             <ComboBox.Items>4</ComboBox.Items>
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
-		<ComboBox
-			Classes="Combo"
+        <ComboBox
             Grid.Row="7"
             Grid.Column="5"
-            SelectedIndex="-1">
+            Classes="Combo"
+            SelectedIndex="{Binding GradeEdit}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -284,11 +288,16 @@
             <ComboBox.Items>5</ComboBox.Items>
         </ComboBox>
 
-        <Button
+        <StackPanel
             Grid.Row="8"
             Grid.Column="0"
-			Margin="0 10"
-            Content="Найти" />
+            Orientation="Horizontal">
+            <Button Command="{Binding Edit}" Content="Найти" />
+            <Button
+                Margin="10"
+                Command="{Binding ClearEdit}"
+                Content="Очистить" />
+        </StackPanel>
 
         <StackPanel
             Grid.Row="8"
@@ -298,14 +307,25 @@
                 Grid.Row="9"
                 Grid.Column="0"
                 Width="165"
-                Margin="5,0"
+                Margin="5,10"
+				Command="{Binding SaveChanges}"
                 Content="Сохранить изменения" />
             <Button
                 Grid.Row="9"
                 Grid.Column="0"
                 Width="165"
-                Margin="5,0 0 0"
+                Margin="5,10,0,0"
+				Command="{Binding DeleteFen}"
                 Content="Удалить FEN" />
         </StackPanel>
+        <TextBlock 
+			Margin="10"
+            Grid.Row="9"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Classes="Message"
+            Foreground="{Binding EditMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
+            Text="{Binding EditMessage}" />
+        
     </Grid>
 </UserControl>

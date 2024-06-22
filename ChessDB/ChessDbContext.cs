@@ -4,11 +4,18 @@ using System.Reflection;
 
 namespace ChessDB
 {
-    public class ChessDbContext:DbContext
+    public class ChessDbContext : DbContext
     {
         public DbSet<Fen> Fens { get; set; }
 
         public DbSet<Person> Persons { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Fen>()
+                .HasIndex(p => p.Description)
+                .IsUnique(true);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
