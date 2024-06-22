@@ -52,7 +52,7 @@
         Margin="10"
         ColumnDefinitions="300 * * * * *"
         RowDefinitions="50 30 30 30 20 30 250">
-
+        		
         <!--  Create Block  -->
         <TextBlock
             Grid.Row="0"
@@ -93,19 +93,20 @@
             Grid.Column="5"
             Classes="Header"
             Text="Оценка" />
-        <DatePicker
+        <DatePicker Name="date"
             Grid.Row="2"
             Grid.Column="0"
             Height="32"
             Margin="0"
             Padding="0,1"
             BorderBrush="Black"
-            CornerRadius="0" />
+            CornerRadius="0"
+            SelectedDate="{Binding CurrentDate}" />
         <ComboBox
             Grid.Row="2"
             Grid.Column="1"
             Classes="Combo"
-            SelectedIndex="-1">
+            SelectedIndex="{Binding Strategy}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -116,7 +117,7 @@
             Grid.Row="2"
             Grid.Column="2"
             Classes="Combo"
-            SelectedIndex="-1">
+            SelectedIndex="{Binding Tactics}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -127,7 +128,7 @@
             Grid.Row="2"
             Grid.Column="3"
             Classes="Combo"
-            SelectedIndex="-1">
+            SelectedIndex="{Binding Score}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -138,7 +139,7 @@
             Grid.Row="2"
             Grid.Column="4"
             Classes="Combo"
-            SelectedIndex="-1">
+            SelectedIndex="{Binding Technique}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -149,7 +150,7 @@
             Grid.Row="2"
             Grid.Column="5"
             Classes="Combo"
-            SelectedIndex="-1">
+            SelectedIndex="{Binding Grade}">
             <ComboBox.Items>1</ComboBox.Items>
             <ComboBox.Items>2</ComboBox.Items>
             <ComboBox.Items>3</ComboBox.Items>
@@ -164,13 +165,13 @@
             Text="Количество упражнений" />
 
         <NumericUpDown
-			HorizontalContentAlignment="Center"
             Grid.Row="4"
             Grid.Column="0"
+            Height="32"
+            Padding="0,1"
+            HorizontalContentAlignment="Center"
             BorderBrush="Black"
-			Height="32"
-			Padding="0 1"
-            FormatString="0"			
+            FormatString="0"
             Minimum="0" />
         <Button
             Grid.Row="4"
@@ -179,11 +180,17 @@
             Width="260"
             Content="Создать" />
 
-        <Border Grid.Row="6" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="6" BorderBrush="Black" BorderThickness="1">
-			<StackPanel>
-				<TextBlock HorizontalAlignment="Center">Список FEN в задании</TextBlock>
-				<ListBox></ListBox>
-			</StackPanel>
+        <Border
+            Grid.Row="6"
+            Grid.RowSpan="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="6"
+            BorderBrush="Black"
+            BorderThickness="1">
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Center">Список FEN в задании</TextBlock>
+                <ListBox />
+            </StackPanel>
 
         </Border>
     </Grid>

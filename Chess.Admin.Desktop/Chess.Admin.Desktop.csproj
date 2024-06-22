@@ -9,7 +9,13 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<AssemblyName>ChessAdmin</AssemblyName>
 		<ApplicationIcon>blackHorse.ico</ApplicationIcon>
-	</PropertyGroup>	
+	</PropertyGroup>
+	<ItemGroup>
+	  <AvaloniaXaml Remove="Properties\**" />
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>	
 	
 	<ItemGroup>
 		<Content Include="blackHorse.ico" />
@@ -25,9 +31,5 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Chess.Admin\Chess.Admin.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Properties\" />
 	</ItemGroup>
 </Project>
