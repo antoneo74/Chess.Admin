@@ -4,7 +4,6 @@ using ChessDB.Model;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 
@@ -144,7 +143,7 @@ namespace Chess.Admin.ViewModels
 
         public ReactiveCommand<Unit, Unit> ClearAdd { get; }
 
-        public ReactiveCommand<Unit, Unit> Edit { get; }
+        public ReactiveCommand<Unit, Unit> Find { get; }
 
         public ReactiveCommand<Unit, Unit> ClearEdit { get; }
 
@@ -160,22 +159,23 @@ namespace Chess.Admin.ViewModels
 
             ClearAdd = ReactiveCommand.Create(ClearAddFields);
 
-            Edit = ReactiveCommand.Create(EditFenAsync, this.WhenAnyValue(x => x.FenEdit, (fen) => !string.IsNullOrEmpty(fen)));
+            Find = ReactiveCommand.Create(FindFenAsync, this.WhenAnyValue(x => x.FenEdit, (fen) => !string.IsNullOrEmpty(fen)));
 
             ClearEdit = ReactiveCommand.Create(ClearEditFields);
 
-            SaveChanges = ReactiveCommand.Create(SaveAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
+            SaveChanges = ReactiveCommand.Create(UpdateAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
 
             DeleteFen = ReactiveCommand.Create(DeleteAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
 
             StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;
         }
-
-
         #endregion
 
         #region Helpers functions        
 
+        /// <summary>
+        /// all fields Add Block are filling by default
+        /// </summary>        
         private void ClearAddFields()
         {
             Fen = AddMessage = string.Empty;
@@ -183,6 +183,21 @@ namespace Chess.Admin.ViewModels
             Strategy = Tactics = Score = Technique = Grade = 0;
         }
 
+        /// <summary>
+        /// all fields Edit Block are filling by default
+        /// </summary>   
+        private void ClearEditFields()
+        {
+            FenEdit = EditMessage = string.Empty;
+
+            IsFound = false;
+
+            StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;
+        }
+
+        /// <summary>
+        /// Add new fen to DB
+        /// </summary>
         private async void AddFenAsync()
         {
             Fen = Fen.Normalization();
@@ -215,16 +230,11 @@ namespace Chess.Admin.ViewModels
                 AddMessage = "Данный FEN уже есть в базе";
             }
         }
-        private void ClearEditFields()
-        {
-            FenEdit = EditMessage = string.Empty;
 
-            IsFound = false;
-
-            StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;
-        }
-
-        private async void EditFenAsync()
+        /// <summary>
+        /// Find fen by name
+        /// </summary>
+        private async void FindFenAsync()
         {
             FenEdit = FenEdit.Normalization();
 
@@ -268,6 +278,9 @@ namespace Chess.Admin.ViewModels
             }
         }
 
+        /// <summary>
+        /// Delete fen 
+        /// </summary>
         private async void DeleteAsync()
         {
             try
@@ -298,7 +311,11 @@ namespace Chess.Admin.ViewModels
             }
         }
 
-        private async void SaveAsync()
+
+        /// <summary>
+        /// Uptade params of found fen
+        /// </summary>
+        private async void UpdateAsync()
         {
             try
             {
