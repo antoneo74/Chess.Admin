@@ -49,10 +49,10 @@
     </UserControl.Styles>
 
     <Grid
-        Margin="10"
-        ColumnDefinitions="300 * * * * *"
+        Margin="40,10"
+        ColumnDefinitions="300 70 70 70 70 70"
         RowDefinitions="50 30 30 30 20 30 250">
-        		
+
         <!--  Create Block  -->
         <TextBlock
             Grid.Row="0"
@@ -93,7 +93,8 @@
             Grid.Column="5"
             Classes="Header"
             Text="Оценка" />
-        <DatePicker Name="date"
+        <DatePicker
+            Name="date"
             Grid.Row="2"
             Grid.Column="0"
             Height="32"
@@ -168,16 +169,27 @@
             Grid.Row="4"
             Grid.Column="0"
             Height="32"
-            Padding="0,1"
-            HorizontalContentAlignment="Center"
+            Padding="15,5"
             BorderBrush="Black"
             FormatString="0"
-            Minimum="0" />
+            Minimum="0"
+            Value="{Binding Count}" />
+
+        <Button
+            Grid.Row="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Width="140"
+            Margin="10"
+            Command="{Binding Clear}"
+            Content="Очистить" />
+
         <Button
             Grid.Row="4"
             Grid.Column="3"
-            Grid.ColumnSpan="3"
-            Width="260"
+            Grid.ColumnSpan="2"
+            Width="140"
+            Command="{Binding Create}"
             Content="Создать" />
 
         <Border
@@ -189,7 +201,7 @@
             BorderThickness="1">
             <StackPanel>
                 <TextBlock HorizontalAlignment="Center">Список FEN в задании</TextBlock>
-                <ListBox />
+                <ListBox ItemsSource="{Binding FenList}"/>
             </StackPanel>
 
         </Border>
