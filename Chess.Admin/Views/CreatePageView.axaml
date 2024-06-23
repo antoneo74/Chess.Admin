@@ -25,6 +25,14 @@
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
 
+        <Style Selector="ListBoxItem">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Margin" Value="10, -10" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="Blue" />
+        </Style>
+
         <Style Selector="ComboBox.Combo">
             <Setter Property="Height" Value="30" />
             <Setter Property="BorderBrush" Value="Black" />
@@ -175,22 +183,24 @@
             Minimum="0"
             Value="{Binding Count}" />
 
-        <Button
+        <StackPanel
             Grid.Row="4"
             Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Width="140"
-            Margin="10"
-            Command="{Binding Clear}"
-            Content="Очистить" />
+            Grid.ColumnSpan="5"
+            Margin="0,8"
+            Orientation="Horizontal">
 
-        <Button
-            Grid.Row="4"
-            Grid.Column="3"
-            Grid.ColumnSpan="2"
-            Width="140"
-            Command="{Binding Create}"
-            Content="Создать" />
+            <Button
+                Width="125"
+                Margin="10,0"
+                Command="{Binding Clear}"
+                Content="Очистить" />
+
+            <Button
+                Width="140"
+                Command="{Binding Create}"
+                Content="Создать" />
+        </StackPanel>
 
         <Border
             Grid.Row="6"
@@ -201,9 +211,16 @@
             BorderThickness="1">
             <StackPanel>
                 <TextBlock HorizontalAlignment="Center">Список FEN в задании</TextBlock>
-                <ListBox ItemsSource="{Binding FenList}"/>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <ListBox ItemsSource="{Binding FenList}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
             </StackPanel>
-
         </Border>
     </Grid>
 </UserControl>
