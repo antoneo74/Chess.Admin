@@ -138,7 +138,7 @@ namespace Chess.Admin.ViewModels
 
                 Message = "Задание успешно сформировано";
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Message = "Что-то пошло не так";
             }

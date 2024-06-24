@@ -1,12 +1,287 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
-             x:Class="Chess.Admin.Views.CheckView">
-	<TextBlock Text="{Binding Added}"/>
-	<Design.DataContext>
-		<vm:CheckViewModel/>
-	</Design.DataContext>
+<UserControl
+    x:Class="Chess.Admin.Views.CheckView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Chess.Admin.Converter;assembly=Chess.Admin"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:CheckViewModel />
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.Header">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
+        <Style Selector="ListBoxItem">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Margin" Value="10, -10" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Foreground" Value="Blue" />
+        </Style>
+
+        <Style Selector="TextBlock.Message">
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="ComboBox.Combo">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource ItemForeground}" />
+        </Style>
+
+        <!--  Button style  -->
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#3F72AF" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ContentPresenter
+                        x:Name="PART_ButtonContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        RecognizesAccessKey="True" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ButtonContentPresenter">
+            <Setter Property="Background" Value="#112D4E" />
+            <Setter Property="TextBlock.Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="Button:disabled /template/ ContentPresenter#PART_ButtonContentPresenter">
+            <Setter Property="Opacity" Value=".7" />
+            <Setter Property="Background" Value="#3F72AF" />
+            <Setter Property="TextBlock.Foreground" Value="White" />
+        </Style>
+
+        <Style Selector="Button.cell /template/ ContentPresenter#PART_ButtonContentPresenter">
+            <Setter Property="Background" Value="{Binding BackgroundColor}" />
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+
+        <Style Selector="Button.click">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Margin" Value="0 10" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="#e3e3e3" />
+            <Setter Property="BorderBrush" Value="Black" />
+        </Style>
+    </UserControl.Styles>
+
+    <SplitView OpenPaneLength="800">
+
+        <Grid
+            Margin="40,10"
+            ColumnDefinitions="* * * *"
+            RowDefinitions="50 40 250 *">
+            <TextBlock
+                Grid.Row="0"
+                Grid.ColumnSpan="4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="Проверить задание" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="150"
+                Classes="click"
+                Content="Загрузить ответ" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                Width="150"
+                Classes="click"
+                Content="Очистить" />
+
+            <Border
+                Grid.Row="2"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                BorderBrush="Black"
+                BorderThickness="1" />
+
+            <StackPanel Grid.Row="2" Grid.Column="0">
+
+                <ComboBox
+                    Name="Combo"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="240"
+                    Height="40"
+                    VerticalContentAlignment="Center"
+                    Background="White"
+                    FontSize="14"
+                    FontWeight="DemiBold"
+                    IsEnabled="{Binding FileIsLoaded}"
+                    ItemsSource="{Binding ListItems}"
+                    PlaceholderText="Выбери упражнение"
+                    SelectedIndex="{Binding Index, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Foreground="Black"
+                                Text="{Binding, Converter={x:Static conv:FuncValueConverters.GetComboboxItem}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Grid ColumnDefinitions="30 320 30" RowDefinitions="30 320 30">
+
+                    <!--  Left numbers  -->
+                    <ItemsControl
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        ItemsSource="{Binding Numbers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="40">
+                                    <TextBlock
+                                        Padding="5,0"
+                                        VerticalAlignment="Center"
+                                        Classes="questions"
+                                        FontSize="14"
+                                        Text="{Binding}"
+                                        TextAlignment="Right" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!--  Top letters  -->
+                    <ItemsControl
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Height="21"
+                        ItemsSource="{Binding Letters}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="40">
+                                    <TextBlock
+                                        VerticalAlignment="Bottom"
+                                        Classes="questions"
+                                        FontSize="14"
+                                        Text="{Binding}"
+                                        TextAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <!--  Board  -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Classes="Board">
+                        <ItemsControl ItemsSource="{Binding Cells}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Width="41"
+                                        Height="41"
+                                        Margin="0"
+                                        Padding="0"
+                                        Classes="cell">
+                                        <Button.Content>
+                                            <Image Source="{Binding, Converter={x:Static conv:FuncValueConverters.GetBitmap}}" />
+                                        </Button.Content>
+                                    </Button>
+
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid
+                                        x:Name="Board"
+                                        Classes="questions"
+                                        Columns="8"
+                                        Rows="8" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Border>
+
+                    <!--  Bottom letters  -->
+                    <ItemsControl
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Height="21"
+                        ItemsSource="{Binding Letters}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="40">
+                                    <TextBlock
+                                        Classes="questions"
+                                        FontSize="14"
+                                        Text="{Binding}"
+                                        TextAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <!--  Right numbers  -->
+                    <ItemsControl
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Width="21"
+                        ItemsSource="{Binding Numbers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="40">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Classes="questions"
+                                        FontSize="14"
+                                        Text="{Binding}"
+                                        TextAlignment="Left" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </SplitView>
 </UserControl>
