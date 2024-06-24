@@ -1,10 +1,17 @@
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
+using Chess.Admin.Extensions;
 using ChessDB;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
@@ -86,9 +93,9 @@ namespace Chess.Admin.ViewModels
 
         public ReactiveCommand<Unit, Unit> Clear { get; }
 
-        public ReactiveCommand<Unit, Unit> Create { get; }
+        public ReactiveCommand<Unit, Unit> CreateList { get; }
 
-
+        public ReactiveCommand<Unit, Unit> CreateFile { get; }
 
         public CreatePageViewModel()
         {
@@ -100,7 +107,69 @@ namespace Chess.Admin.ViewModels
 
             Clear = ReactiveCommand.Create(PageClear);
 
-            Create = ReactiveCommand.Create(CreateExercisesList, this.WhenAnyValue(x => x.Count, count => count != 0));
+            CreateList = ReactiveCommand.Create(CreateExercisesList, this.WhenAnyValue(x => x.Count, count => count != 0));
+
+            CreateFile = ReactiveCommand.CreateFromTask(CreateExercisesFile, this.WhenAnyValue(x=>x.FenList.Count, count => count != 0));
+        }
+
+       
+
+        /// <summary>
+        /// Save report file
+        /// </summary>
+        /// <returns></returns>
+        private async Task CreateExercisesFile()
+        {
+            try
+            {
+                var folder = await DoOpenFolderPickerAsync();
+
+                if (folder is null) return;
+
+                var folderPath = folder.ToList()[0].TryGetLocalPath() ?? throw new Exception("Выбрана некорректная папка");
+
+                var title = $"{CurrentDate.Day}_{CurrentDate.Month}_{CurrentDate.Year}.txt";
+
+                var path = System.IO.Path.Combine(folderPath, title);
+
+                var text = CreateReportText();
+
+                await File.WriteAllTextAsync(path, text);
+
+                Message = "Задание успешно сформировано";
+            }
+            catch (Exception e)
+            {
+                Message = "Что-то пошло не так";
+            }
+        }
+
+        private string CreateReportText()
+        {
+            StringBuilder sb = new();
+            foreach (var item in FenList)
+            {
+                sb.AppendLine(item);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// SaveFileDialog
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        private static async Task<IReadOnlyList<IStorageFolder>> DoOpenFolderPickerAsync()
+        {
+            if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
+                 desktop.MainWindow?.StorageProvider is not { } provider)
+
+                throw new NullReferenceException("Missing StorageProvider instance.");
+
+            return await provider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+            {
+                Title = "Выбери куда сохранить задание"
+            });
         }
 
         private void CreateExercisesList()
@@ -131,15 +200,13 @@ namespace Chess.Admin.ViewModels
                         list = list.Where(x => x.Grade == Grade);
                     }
 
-                    List<string> list2 = new List<string>();
+                    var filter = list.Select(x => x.Description).ToList();
 
-                    //foreach (var item in list)
-                    //{
-                    //    list2.Add(item.Description);
-                    //}
+                    filter.Shuffle();
 
-                    FenList = new ObservableCollection<string>(list.Select(x=>x.Description));
-                   
+                    FenList = new ObservableCollection<string>(filter.Take(Count));
+
+                    Message = "Список успешно подготовлен";
                 }
             }
             catch (Exception)
@@ -152,7 +219,11 @@ namespace Chess.Admin.ViewModels
         {
             CurrentDate = DateTimeOffset.Now;
 
+            FenList.Clear();
+
             Strategy = Tactics = Score = Technique = Grade = -1;
+            
+            Message = string.Empty;
 
             Count = 0;
         }

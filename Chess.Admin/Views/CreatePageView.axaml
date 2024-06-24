@@ -2,6 +2,7 @@
     x:Class="Chess.Admin.Views.CreatePageView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Chess.Admin.Converter;assembly=Chess.Admin"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
@@ -33,6 +34,13 @@
             <Setter Property="Foreground" Value="Blue" />
         </Style>
 
+        <Style Selector="TextBlock.Message">
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
         <Style Selector="ComboBox.Combo">
             <Setter Property="Height" Value="30" />
             <Setter Property="BorderBrush" Value="Black" />
@@ -59,7 +67,7 @@
     <Grid
         Margin="40,10"
         ColumnDefinitions="300 70 70 70 70 70"
-        RowDefinitions="50 30 30 30 20 30 250">
+        RowDefinitions="50 30 30 30 20 30 250 50">
 
         <!--  Create Block  -->
         <TextBlock
@@ -192,19 +200,19 @@
 
             <Button
                 Width="125"
-                Margin="10,0"
+                Margin="10,8"
                 Command="{Binding Clear}"
                 Content="Очистить" />
 
             <Button
                 Width="140"
-                Command="{Binding Create}"
-                Content="Создать" />
+                Margin="0,8"
+                Command="{Binding CreateList}"
+                Content="Создать список" />
         </StackPanel>
 
         <Border
             Grid.Row="6"
-            Grid.RowSpan="4"
             Grid.Column="0"
             Grid.ColumnSpan="6"
             BorderBrush="Black"
@@ -222,5 +230,19 @@
                 </ScrollViewer>
             </StackPanel>
         </Border>
+
+        <Button
+            Grid.Row="7"
+            Grid.Column="0"
+            Width="150"
+            Command="{Binding CreateFile}"
+            Content="Сохранить в файл" />
+        <TextBlock
+            Grid.Row="7"
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Classes="Message"
+            Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
+            Text="{Binding Message}" />
     </Grid>
 </UserControl>

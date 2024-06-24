@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Chess.Admin.Extensions
 {
-    public static class CheckFen
+    public static class Extensions
     {
         public static bool IsCorrect(this string fen)
         {
@@ -40,6 +41,21 @@ namespace Chess.Admin.Extensions
             fen = fen.Trim();
 
             return fen.Split(' ')[0];
+        }
+
+        private static readonly Random rng = new();
+
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
     }
 }
