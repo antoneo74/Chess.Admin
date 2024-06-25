@@ -17,6 +17,8 @@ namespace Chess.Admin.ViewModels
 {
     public class CreatePageViewModel : ViewModelBase
     {
+        #region private members
+
         private DateTimeOffset _currentDate;
         private int _strategy;
         private int _tactics;
@@ -27,6 +29,9 @@ namespace Chess.Admin.ViewModels
         private ObservableCollection<string> _fenList;
         private string _message = string.Empty;
 
+        #endregion
+
+        #region public members
         public string Message
         {
             get => _message;
@@ -91,11 +96,18 @@ namespace Chess.Admin.ViewModels
             set { this.RaiseAndSetIfChanged(ref _grade, value); }
         }
 
+        #endregion
+
+        #region reactive commands
         public ReactiveCommand<Unit, Unit> Clear { get; }
 
         public ReactiveCommand<Unit, Unit> CreateList { get; }
 
         public ReactiveCommand<Unit, Unit> CreateFile { get; }
+
+        #endregion
+
+        #region constructor
 
         public CreatePageViewModel()
         {
@@ -112,8 +124,9 @@ namespace Chess.Admin.ViewModels
             CreateFile = ReactiveCommand.CreateFromTask(CreateExercisesFile, this.WhenAnyValue(x=>x.FenList.Count, count => count != 0));
         }
 
-       
+        #endregion
 
+        #region save file with exercise
         /// <summary>
         /// Save report file
         /// </summary>
@@ -143,17 +156,7 @@ namespace Chess.Admin.ViewModels
                 Message = "Что-то пошло не так";
             }
         }
-
-        private string CreateReportText()
-        {
-            StringBuilder sb = new();
-            foreach (var item in FenList)
-            {
-                sb.AppendLine(item);
-            }
-            return sb.ToString();
-        }
-
+        
         /// <summary>
         /// SaveFileDialog
         /// </summary>
@@ -170,6 +173,20 @@ namespace Chess.Admin.ViewModels
             {
                 Title = "Выбери куда сохранить задание"
             });
+        }
+
+        #endregion
+
+        #region helpers functions
+
+        private string CreateReportText()
+        {
+            StringBuilder sb = new();
+            foreach (var item in FenList)
+            {
+                sb.AppendLine(item);
+            }
+            return sb.ToString();
         }
 
         private void CreateExercisesList()
@@ -227,5 +244,6 @@ namespace Chess.Admin.ViewModels
 
             Count = 0;
         }
+        #endregion
     }
 }

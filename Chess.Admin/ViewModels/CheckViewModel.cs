@@ -1,24 +1,23 @@
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Chess.Admin.Models;
+using Chess.Admin.Parser;
 using Chess.Admin.Services;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
-using System.Text.Json.Serialization;
+using System.Reactive;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Threading;
-using Avalonia;
-using Chess.Admin.Parser;
+using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
     public class CheckViewModel : ViewModelBase
-	{
+    {
         public static IEnumerable<char> Numbers => "87654321";
 
         public static IEnumerable<char> Letters => "ABCDEFGH";
@@ -43,6 +42,8 @@ namespace Chess.Admin.ViewModels
 
         // private string _exercisesName;
         #endregion
+
+        #region Public members
         public int Index
         {
             get => _index;
@@ -66,7 +67,7 @@ namespace Chess.Admin.ViewModels
             set => this.RaiseAndSetIfChanged(ref _fileIsLoaded, value);
         }
 
-        
+
         public User? User
         {
             get => _user;
@@ -101,6 +102,16 @@ namespace Chess.Admin.ViewModels
 
             set => this.RaiseAndSetIfChanged(ref _message, value);
         }
+        #endregion
+
+        #region ReactiveCommands
+        public ReactiveCommand<Unit, Unit> LoadCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> ClearCommand { get; }
+
+        #endregion
+
+        #region Constructor
 
         public CheckViewModel(IParser parser)
         {
@@ -108,58 +119,39 @@ namespace Chess.Admin.ViewModels
             _board = new Board();
             _cells = new ObservableCollection<Cell>(_board.BoardToList());
             _listItems = new ObservableCollection<Exercise>();
+            LoadCommand = ReactiveCommand.CreateFromTask(OpenFileAsync);
+
+
         }
+        #endregion
 
         #region Open file
-        private async Task OpenFile(CancellationToken token)
+        private async Task OpenFileAsync(CancellationToken token)
         {
             try
             {
                 var file = await DoOpenFilePickerAsync() ?? throw new Exception("Файл не выбран или имеет недопустимый формат");
 
-                // Limit the text file to 1MB so that the demo won't lag.
-                if ((await file.GetBasicPropertiesAsync()).Size <= 1024 * 1024 * 1)
-                {
-                    int index = 1;
+                await using var readStream = await file.OpenReadAsync();
 
-                    await using var readStream = await file.OpenReadAsync();
+                using var reader = new StreamReader(readStream);
 
-                    using var reader = new StreamReader(readStream);
+                string? s = await reader.ReadToEndAsync(token);
 
-                    ListItems.Clear();
+                AnswerParser.Parse(s, ref _user, ref _listItems);
 
-                    while (!reader.EndOfStream)
-                    {
-                        string? s;
+                _index = ListItems.Count == 0 ? -1 : 0;
 
-                        if ((s = await reader.ReadLineAsync(token)) != null)
-                        {
-                            var item = new Exercise()
-                            {
-                                FenItem = s,
-                                Id = index++
-                            };
+                FileIsLoaded = true;
 
-                            ListItems.Add(item);
-                        }
-                    }
+                Message = "Файл успешно загружен";
 
-                    Index = ListItems.Count == 0 ? -1 : 0;
-
-                    FileIsLoaded = true;
-
-                    Message = "Файл успешно загружен";
-                }
-                else
-                {
-                    throw new Exception("File exceeded 1MB limit.");
-                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Message = e.Message;
+                Message = "Что-то пошло не так";
             }
-        }        
+        }
 
         private async Task<IStorageFile?> DoOpenFilePickerAsync()
         {
@@ -183,12 +175,8 @@ namespace Chess.Admin.ViewModels
 
             var name = files[0].Name;
 
-            if (regex.IsMatch(name))
-            {
-                //_exercisesName = name;
-
-                return files[0];
-            }
+            if (regex.IsMatch(name)) return files[0];
+            
             return null;
         }
         #endregion
