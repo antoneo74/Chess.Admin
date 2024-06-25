@@ -115,6 +115,7 @@ namespace Chess.Admin.ViewModels
 
         public CheckViewModel(IParser parser)
         {
+            _index = -1; 
             _parser = parser;
             _board = new Board();
             _cells = new ObservableCollection<Cell>(_board.BoardToList());
@@ -140,7 +141,7 @@ namespace Chess.Admin.ViewModels
 
                 AnswerParser.Parse(s, ref _user, ref _listItems);
 
-                _index = ListItems.Count == 0 ? -1 : 0;
+                Index = ListItems.Count == 0 ? -1 : 0;
 
                 FileIsLoaded = true;
 
@@ -176,7 +177,7 @@ namespace Chess.Admin.ViewModels
             var name = files[0].Name;
 
             if (regex.IsMatch(name)) return files[0];
-            
+
             return null;
         }
         #endregion
