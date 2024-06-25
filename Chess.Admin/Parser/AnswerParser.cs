@@ -13,8 +13,10 @@ namespace Chess.Admin.Parser
 
             if (ListItems.Count != 0) ListItems.Clear();
 
-            for (int i = 2, index = 1; i < array.Length; i++, index++)
+            for (int i = 2, index = 1; i < array.Length; i++)
             {
+                array[i] = array[i].Trim();
+
                 if (array[i] != string.Empty)
                 {
                     var substring = array[i].Split(' ');
@@ -34,6 +36,8 @@ namespace Chess.Admin.Parser
                         FenItem = substring[4]
                     };
                     ListItems.Add(item);
+
+                    index++;
                 }
             }
         }

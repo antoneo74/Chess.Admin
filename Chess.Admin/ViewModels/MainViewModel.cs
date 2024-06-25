@@ -1,6 +1,7 @@
 ﻿using Chess.Admin.Parser;
 using Chess.Admin.Services;
 using ReactiveUI;
+using System.Collections.Generic;
 using System.Reactive;
 
 namespace Chess.Admin.ViewModels;
@@ -9,7 +10,7 @@ public class MainViewModel : ViewModelBase
 {
     private ViewModelBase _currentPage;
 
-    private static IParser _parser = null!;
+    private IParser _parser = null!;
 
     public ViewModelBase CurrentPage
     {
@@ -30,6 +31,14 @@ public class MainViewModel : ViewModelBase
     {
         _parser = parser;
 
+        Pages = new List<ViewModelBase>()
+        {
+            new AddPageViewModel(),
+            new CreatePageViewModel(),
+            new CheckViewModel(_parser),
+            new StatisticViewModel()
+        };
+
         _isOpen = false;
 
         _currentPage = Pages[0];
@@ -46,15 +55,9 @@ public class MainViewModel : ViewModelBase
         CurrentPage = Pages[i];
     }
 
-    private ViewModelBase[] Pages =
-    {
-        new AddPageViewModel(),
-        new CreatePageViewModel(),
-        new CheckViewModel(_parser),
-        new StatisticViewModel()
-    };
+    private List<ViewModelBase> Pages;
 
     public ReactiveCommand<Unit, Unit> OpenPanel { get; }
 
-    public ReactiveCommand<string, Unit> ContextPageCommand { get; }    
+    public ReactiveCommand<string, Unit> ContextPageCommand { get; }
 }

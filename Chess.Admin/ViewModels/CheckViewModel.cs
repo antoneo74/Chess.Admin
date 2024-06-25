@@ -52,11 +52,10 @@ namespace Chess.Admin.ViewModels
             {
                 this.RaiseAndSetIfChanged(ref _index, value);
 
-                //if (_index != -1)
-                //{
-                //    Load();
-                //}
-                //AutoFillAnswersFields();
+                if (_index != -1)
+                {
+                    Load();
+                }
             }
         }
 
@@ -116,14 +115,21 @@ namespace Chess.Admin.ViewModels
         public CheckViewModel(IParser parser)
         {
             _index = -1; 
+
             _parser = parser;
+
             _board = new Board();
+
             _cells = new ObservableCollection<Cell>(_board.BoardToList());
+
             _listItems = new ObservableCollection<Exercise>();
+
             LoadCommand = ReactiveCommand.CreateFromTask(OpenFileAsync);
 
-
+            ClearCommand = ReactiveCommand.Create(Clear);
         }
+
+        
         #endregion
 
         #region Open file
@@ -146,10 +152,11 @@ namespace Chess.Admin.ViewModels
                 FileIsLoaded = true;
 
                 Message = "Файл успешно загружен";
-
             }
             catch (Exception)
             {
+                Clear();
+
                 Message = "Что-то пошло не так";
             }
         }
@@ -181,5 +188,51 @@ namespace Chess.Admin.ViewModels
             return null;
         }
         #endregion
+
+        /// <summary>
+        /// Load new board from fen
+        /// </summary>
+        private void Load()
+        {
+            try
+            {
+                Message = string.Empty;
+
+                if (Index != -1 && ListItems.Count != 0)
+                {
+                    _board = _parser.Parse(ListItems[Index].FenItem);
+                }
+                else
+                {
+                    _board = new Board();
+                }
+
+                if (_board != null)
+                {
+                    Cells = new ObservableCollection<Cell>(_board.BoardToList());
+                }
+                else
+                {
+                    Message = "Неправильный формат входной строки";
+                }
+            }
+            catch (Exception)
+            {
+                Message = "Что-то пошло не так";
+            }
+        }
+
+        private void Clear()
+        {
+            Message = string.Empty;
+
+            Index = -1;
+
+            ListItems.Clear();
+
+            _board = new Board();
+
+            Cells = new ObservableCollection<Cell>(_board.BoardToList());
+        }
     }
 }

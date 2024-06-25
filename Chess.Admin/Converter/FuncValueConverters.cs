@@ -44,33 +44,33 @@ namespace Chess.Admin.Converter
                         break;
                     case Figure.King:
                         image = (s.Color == FigureColor.White) ?
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/whiteKing.png"))) :
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/blackKing.png")));
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/whiteKing.png"))) :
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/blackKing.png")));
                         break;
                     case Figure.Queen:
                         image = (s.Color == FigureColor.White) ?
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/whiteQueen.png"))) :
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/blackQueen.png")));
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/whiteQueen.png"))) :
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/blackQueen.png")));
                         break;
                     case Figure.Rook:
                         image = (s.Color == FigureColor.White) ?
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/whiteRook.png"))) :
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/blackRook.png")));
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/whiteRook.png"))) :
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/blackRook.png")));
                         break;
                     case Figure.Knight:
                         image = (s.Color == FigureColor.White) ?
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/whiteHorse.png"))) :
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/blackHorse.png")));
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/whiteHorse.png"))) :
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/blackHorse.png")));
                         break;
                     case Figure.Bishop:
                         image = (s.Color == FigureColor.White) ?
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/whiteBishop.png"))) :
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/blackBishop.png")));
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/whiteBishop.png"))) :
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/blackBishop.png")));
                         break;
                     case Figure.Pawn:
                         image = (s.Color == FigureColor.White) ?
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/whitePawn.png"))) :
-                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Client/Assets/blackPawn.png")));
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/whitePawn.png"))) :
+                        new Bitmap(AssetLoader.Open(new System.Uri("avares://Chess.Admin/Assets/blackPawn.png")));
                         break;
                     default:
                         break;

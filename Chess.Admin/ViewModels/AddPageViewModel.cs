@@ -352,7 +352,6 @@ namespace Chess.Admin.ViewModels
                 EditMessage = "Что-то пошло не так";
             }
         }
-
         #endregion
     }
 }
