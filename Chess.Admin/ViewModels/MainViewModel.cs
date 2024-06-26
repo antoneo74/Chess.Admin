@@ -12,6 +12,8 @@ public class MainViewModel : ViewModelBase
 
     private IParser _parser = null!;
 
+    private IAnalysis _analysis = null!;
+
     public ViewModelBase CurrentPage
     {
         get { return _currentPage; }
@@ -27,15 +29,17 @@ public class MainViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isOpen, value);
     }
 
-    public MainViewModel(IParser parser)
+    public MainViewModel(IParser parser, IAnalysis analysis)
     {
         _parser = parser;
+
+        _analysis = analysis;
 
         Pages = new List<ViewModelBase>()
         {
             new AddPageViewModel(),
             new CreatePageViewModel(),
-            new CheckViewModel(_parser),
+            new CheckViewModel(_parser, _analysis),
             new StatisticViewModel()
         };
 

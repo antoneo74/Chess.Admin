@@ -18,6 +18,14 @@ namespace Chess.Admin.Converter
             return new SolidColorBrush(Colors.Red);
         });
 
+        public static FuncValueConverter<bool, IBrush?> GetErrorForeground { get; } =
+        new FuncValueConverter<bool, IBrush?>(s =>
+        {
+            if (s==true) return new SolidColorBrush(Colors.Green);
+
+            return new SolidColorBrush(Colors.Red);
+        });
+        
 
         public static FuncValueConverter<Exercise?, string?> GetComboboxItem { get; } =
             new FuncValueConverter<Exercise?, string?>(s =>

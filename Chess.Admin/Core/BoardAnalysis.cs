@@ -1,14 +1,16 @@
 ﻿using Chess.Admin.Models;
-using static SkiaSharp.SKPath;
+using Chess.Admin.Services;
 
 namespace Chess.Core
 {
-    internal class BoardAnalysis(Board board)
+    public class BoardAnalysis() : IAnalysis
     {
-        private readonly Board _board = board;
+        private Board _board;
 
-        public Board Analysis()
+        public Board Analysis(Board board)
         {
+            _board = board;
+            
             for (int row = 0; row < 8; row++)
             {
                 for (int column = 0; column < 8; column++)
@@ -62,7 +64,7 @@ namespace Chess.Core
             //go to top
             while (CellCorrect(--iterator, column))
             {
-               if(!CheckigVerticalHorizontalCells(iterator, column, ref color, ref isCanCapture)) break;
+                if (!CheckigVerticalHorizontalCells(iterator, column, ref color, ref isCanCapture)) break;
             }
 
             iterator = row;
@@ -219,7 +221,7 @@ namespace Chess.Core
 
                         if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
                         {
-                            PawnIsDiagonalCheckingNextCell(rowIterator+1, columnIterator+1, color);
+                            PawnIsDiagonalCheckingNextCell(rowIterator + 1, columnIterator + 1, color);
 
                             break;
                         }

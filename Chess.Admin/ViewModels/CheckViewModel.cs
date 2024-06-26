@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
+using Chess.Admin.Extensions;
 using Chess.Admin.Models;
 using Chess.Admin.Parser;
 using Chess.Admin.Services;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -26,6 +28,8 @@ namespace Chess.Admin.ViewModels
 
         private readonly IParser _parser;
 
+        private readonly IAnalysis _analysis;
+
         private int _index;
 
         private string _message = string.Empty;
@@ -40,10 +44,36 @@ namespace Chess.Admin.ViewModels
 
         private bool _fileIsLoaded;
 
-        // private string _exercisesName;
+        private int _total;
+
+        private int _captureError;
+
+        private int _weaknessError;
         #endregion
 
         #region Public members
+
+        public int Total
+        {
+            get => _total;
+
+            set => this.RaiseAndSetIfChanged(ref _total, value);
+        }
+
+        public int CaptureError
+        {
+            get => _captureError;
+
+            set => this.RaiseAndSetIfChanged(ref _captureError, value);
+        }
+
+        public int WeaknessError
+        {
+            get => _weaknessError;
+
+            set => this.RaiseAndSetIfChanged(ref _weaknessError, value);
+        }
+
         public int Index
         {
             get => _index;
@@ -58,14 +88,6 @@ namespace Chess.Admin.ViewModels
                 }
             }
         }
-
-        public bool FileIsLoaded
-        {
-            get => _fileIsLoaded;
-
-            set => this.RaiseAndSetIfChanged(ref _fileIsLoaded, value);
-        }
-
 
         public User? User
         {
@@ -112,24 +134,26 @@ namespace Chess.Admin.ViewModels
 
         #region Constructor
 
-        public CheckViewModel(IParser parser)
+        public CheckViewModel(IParser parser, IAnalysis analysis)
         {
-            _index = -1; 
+            _index = -1;
 
             _parser = parser;
+
+            _analysis = analysis;
 
             _board = new Board();
 
             _cells = new ObservableCollection<Cell>(_board.BoardToList());
 
-            _listItems = new ObservableCollection<Exercise>();
+            _listItems = [];
 
             LoadCommand = ReactiveCommand.CreateFromTask(OpenFileAsync);
 
             ClearCommand = ReactiveCommand.Create(Clear);
         }
 
-        
+
         #endregion
 
         #region Open file
@@ -147,9 +171,9 @@ namespace Chess.Admin.ViewModels
 
                 AnswerParser.Parse(s, ref _user, ref _listItems);
 
-                Index = ListItems.Count == 0 ? -1 : 0;
+                GetAnswer();
 
-                FileIsLoaded = true;
+                Index = ListItems.Count == 0 ? -1 : 0;
 
                 Message = "Файл успешно загружен";
             }
@@ -222,6 +246,9 @@ namespace Chess.Admin.ViewModels
             }
         }
 
+        /// <summary>
+        /// Clear all fields
+        /// </summary>
         private void Clear()
         {
             Message = string.Empty;
@@ -232,7 +259,43 @@ namespace Chess.Admin.ViewModels
 
             _board = new Board();
 
+            Total = CaptureError = WeaknessError = 0;
+
             Cells = new ObservableCollection<Cell>(_board.BoardToList());
+        }
+
+        private void GetAnswer()
+        {
+            if (ListItems.Count == 0) return;
+
+            var temp = ListItems;
+
+            ListItems = [];
+
+            foreach (var item in temp)
+            {
+                var currentBoard = _parser.Parse(item.FenItem);
+
+                if (currentBoard != null)
+                {
+                    currentBoard = _analysis.Analysis(currentBoard);
+
+                    if (currentBoard.GetWhiteAttacks() == item.WhiteCapture) item.WCError = true;
+
+                    if (currentBoard.GetWeaknessWhite() == item.WhiteWeakness) item.WWError = true;
+
+                    if (currentBoard.GetBlackAttacks() == item.BlackCapture) item.BCError = true;
+
+                    if (currentBoard.GetWeaknessBlack() == item.BlackWeakness) item.BWError = true;
+                }
+                ListItems.Add(item);
+            }
+
+            Total = ListItems.Count * 4;
+
+            CaptureError = ListItems.Where(x => x.BCError == false).Count() + ListItems.Where(x => x.WCError == false).Count();
+
+            WeaknessError = ListItems.Where(x => x.BWError == false).Count() + ListItems.Where(x => x.WWError == false).Count();
         }
     }
 }

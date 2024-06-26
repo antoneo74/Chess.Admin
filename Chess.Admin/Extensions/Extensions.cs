@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Chess.Admin.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chess.Admin.Extensions
 {
@@ -56,6 +58,38 @@ namespace Chess.Admin.Extensions
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static int GetWeaknessBlack(this Board board)
+        {
+            return board.BoardToList()
+                .Where(x => x.Color == FigureColor.Black
+                            && x.ProtectionsCount <= x.EnemyAttacksCount
+                            && x.Figure != Figure.King)
+                .Count();
+        }
+
+        public static int GetWeaknessWhite(this Board board)
+        {
+            return board.BoardToList()
+                .Where(x => x.Color == FigureColor.White
+                            && x.ProtectionsCount <= x.EnemyAttacksCount
+                            && x.Figure != Figure.King)
+                .Count();
+        }
+
+        public static int GetBlackAttacks(this Board board)
+        {
+            return board.BoardToList()
+                .Where(x => x.Color == FigureColor.White)
+                .Sum(x => x.Capture);
+        }
+
+        public static int GetWhiteAttacks(this Board board)
+        {
+            return board.BoardToList()
+                .Where(x => x.Color == FigureColor.Black)
+                .Sum(x => x.Capture);
         }
     }
 }

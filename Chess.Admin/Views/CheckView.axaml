@@ -19,6 +19,13 @@
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
 
+        <Style Selector="TextBlock.report">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+        </Style>
+
         <Style Selector="ListBoxItem">
             <Setter Property="Height" Value="20" />
             <Setter Property="Margin" Value="10, -10" />
@@ -82,6 +89,34 @@
             <Setter Property="Background" Value="#e3e3e3" />
             <Setter Property="BorderBrush" Value="Black" />
         </Style>
+
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid
+                        Name="PART_ColumnHeaderRoot"
+                        Background="{TemplateBinding Background}"
+                        ColumnDefinitions="* 1">
+
+                        <Grid
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="0" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </Style>
     </UserControl.Styles>
 
     <SplitView OpenPaneLength="800">
@@ -89,12 +124,8 @@
         <Grid
             Margin="10,10"
             ColumnDefinitions="* 30 * "
-            RowDefinitions="50 40 * 30">
-            <TextBlock Classes="Message"
-                Grid.Row="3"
-                Grid.Column="0"
-				Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground }} "
-                Text="{Binding Message}" />
+            RowDefinitions="30 30 * 30">
+            
             <TextBlock
                 Grid.Row="0"
                 Grid.ColumnSpan="4"
@@ -116,23 +147,128 @@
                 Grid.Row="1"
                 Grid.Column="2"
                 Width="150"
-				Command="{Binding ClearCommand}"
                 HorizontalAlignment="Left"
                 Classes="click"
+                Command="{Binding ClearCommand}"
                 Content="Очистить" />
 
-            <Border
+            <StackPanel
                 Grid.Row="2"
                 Grid.Column="2"
-                Margin="0,20,10,10"
-                BorderBrush="Gray"
-                BorderThickness="1" />
+                Margin="0,10,10,10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="report" Text="Всего решено задач" />
+                    <TextBlock Text="{Binding Total}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="report" Text="Ошибок на взятиях" />
+                    <TextBlock Text="{Binding CaptureError}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="report" Text="Ошибок на слабостях" />
+                    <TextBlock Text="{Binding WeaknessError}" />
+                </StackPanel>
+                <DataGrid
+                    Height="320"
+                    Margin="0,15,0,0"
+                    AutoGenerateColumns="False"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    GridLinesVisibility="All"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding ListItems}">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Id}"
+                            FontSize="10"
+                            Header="#" />
+
+                        <DataGridTemplateColumn Width="2*" Header="ВБ">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        FontWeight="DemiBold"
+                                        Foreground="{Binding WCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                        Text="{Binding WhiteCapture}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Width="2*" Header="СБ">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        FontWeight="DemiBold"
+                                        Foreground="{Binding WWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                        Text="{Binding WhiteWeakness}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Width="2*" Header="ВЧ">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        FontWeight="DemiBold"
+                                        Foreground="{Binding BCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                        Text="{Binding BlackCapture}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Width="2*" Header="СЧ">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        FontWeight="DemiBold"
+                                        Foreground="{Binding BWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                        Text="{Binding BlackWeakness}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontSize="10"
+                    FontStyle="Italic"
+                    Text="Взятия белые - ВБ" />
+                <TextBlock
+                    FontSize="10"
+                    FontStyle="Italic"
+                    Text="Слабости белые - СБ" />
+                <TextBlock
+                    FontSize="10"
+                    FontStyle="Italic"
+                    Text="Взятия черные - ВЧ" />
+                <TextBlock
+                    FontSize="10"
+                    FontStyle="Italic"
+                    Text="Слабости черные - СЧ" />
+
+            </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="0">
 
                 <ComboBox
-                    Grid.Row="3"
-                    Grid.Column="1"
                     Width="320"
                     Height="30"
                     Margin="14,20,0,0"
@@ -154,6 +290,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
+                <!--  Board  -->
                 <Grid ColumnDefinitions="16 320 30" RowDefinitions="30 320 30">
 
                     <!--  Left numbers  -->
@@ -278,6 +415,11 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </Grid>
+
+				<TextBlock
+                Classes="Message"
+                Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
+                Text="{Binding Message}" />
             </StackPanel>
         </Grid>
     </SplitView>
