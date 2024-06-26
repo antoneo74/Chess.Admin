@@ -9,7 +9,7 @@ namespace Chess.Admin.Parser
         {
             var array = s.Split('\n');
 
-            user = new(array[0], array[1]);
+            user = new(array[0].Trim(), array[1].Trim());
 
             if (ListItems.Count != 0) ListItems.Clear();
 

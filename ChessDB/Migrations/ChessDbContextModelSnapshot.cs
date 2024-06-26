@@ -55,7 +55,7 @@ namespace ChessDB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Failure")
+                    b.Property<int>("CaptureError")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
@@ -66,10 +66,10 @@ namespace ChessDB.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Success")
+                    b.Property<int>("TotalExercises")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalExercises")
+                    b.Property<int>("WeaknessError")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

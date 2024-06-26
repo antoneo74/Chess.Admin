@@ -5,7 +5,7 @@ namespace Chess.Core
 {
     public class BoardAnalysis() : IAnalysis
     {
-        private Board _board;
+        private Board _board = new();
 
         public Board Analysis(Board board)
         {

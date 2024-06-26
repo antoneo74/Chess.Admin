@@ -15,8 +15,6 @@ namespace Chess.Admin.DependencyInjection
             collection.AddSingleton<IAnalysis, BoardAnalysis>();
 
             collection.AddTransient<MainViewModel>();
-
-            //collection.AddTransient<CheckViewModel>();
         }        
     }
 }

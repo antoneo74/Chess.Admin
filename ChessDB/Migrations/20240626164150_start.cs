@@ -5,7 +5,7 @@
 namespace ChessDB.Migrations
 {
     /// <inheritdoc />
-    public partial class Start : Migration
+    public partial class start : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,8 +37,8 @@ namespace ChessDB.Migrations
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
                     TotalExercises = table.Column<int>(type: "INTEGER", nullable: false),
-                    Success = table.Column<int>(type: "INTEGER", nullable: false),
-                    Failure = table.Column<int>(type: "INTEGER", nullable: false)
+                    CaptureError = table.Column<int>(type: "INTEGER", nullable: false),
+                    WeaknessError = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

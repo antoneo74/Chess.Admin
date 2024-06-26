@@ -15,8 +15,8 @@ namespace ChessDB.Model
 
         public int TotalExercises {  get; set; }
 
-        public int Success {  get; set; }
+        public int CaptureError {  get; set; }
 
-        public int Failure { get; set; }
+        public int WeaknessError { get; set; }
     }
 }

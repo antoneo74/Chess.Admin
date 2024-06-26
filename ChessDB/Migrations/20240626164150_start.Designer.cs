@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChessDB.Migrations
 {
     [DbContext(typeof(ChessDbContext))]
-    [Migration("20240622095752_Start")]
-    partial class Start
+    [Migration("20240626164150_start")]
+    partial class start
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,7 @@ namespace ChessDB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Failure")
+                    b.Property<int>("CaptureError")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
@@ -69,10 +69,10 @@ namespace ChessDB.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Success")
+                    b.Property<int>("TotalExercises")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalExercises")
+                    b.Property<int>("WeaknessError")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

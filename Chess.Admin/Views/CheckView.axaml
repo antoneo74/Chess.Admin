@@ -125,7 +125,7 @@
             Margin="10,10"
             ColumnDefinitions="* 30 * "
             RowDefinitions="30 30 * 30">
-            
+
             <TextBlock
                 Grid.Row="0"
                 Grid.ColumnSpan="4"
@@ -134,23 +134,29 @@
                 FontSize="16"
                 FontWeight="Bold"
                 Text="Проверить задание" />
-
-            <Button
+            <StackPanel
+				Margin="0 0 0 10"
                 Grid.Row="1"
                 Grid.Column="0"
-                Width="150"
-                HorizontalAlignment="Right"
-                Classes="click"
-                Command="{Binding LoadCommand}"
-                Content="Загрузить ответ" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="2"
-                Width="150"
-                HorizontalAlignment="Left"
-                Classes="click"
-                Command="{Binding ClearCommand}"
-                Content="Очистить" />
+                Grid.ColumnSpan="3"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="150"
+                    Classes="click"
+                    Command="{Binding LoadCommand}"
+                    Content="Загрузить ответ" />
+                <Button Margin="10"
+                    Width="150"
+                    Classes="click"
+                    Command="{Binding ClearCommand}"
+                    Content="Очистить" />
+                <Button
+                    Width="150"
+                    Classes="click"
+                    Command="{Binding DataBaseCommand}"
+                    Content="Сохранить в базу" />
+            </StackPanel>
 
             <StackPanel
                 Grid.Row="2"
@@ -416,10 +422,10 @@
                     </ItemsControl>
                 </Grid>
 
-				<TextBlock
-                Classes="Message"
-                Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
-                Text="{Binding Message}" />
+                <TextBlock
+                    Classes="Message"
+                    Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
+                    Text="{Binding Message}" />
             </StackPanel>
         </Grid>
     </SplitView>

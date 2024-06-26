@@ -5,6 +5,9 @@ using Chess.Admin.Extensions;
 using Chess.Admin.Models;
 using Chess.Admin.Parser;
 using Chess.Admin.Services;
+using ChessDB;
+using ChessDB.Model;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -130,6 +133,8 @@ namespace Chess.Admin.ViewModels
 
         public ReactiveCommand<Unit, Unit> ClearCommand { get; }
 
+        public ReactiveCommand<Unit, Unit> DataBaseCommand { get; }
+
         #endregion
 
         #region Constructor
@@ -151,8 +156,9 @@ namespace Chess.Admin.ViewModels
             LoadCommand = ReactiveCommand.CreateFromTask(OpenFileAsync);
 
             ClearCommand = ReactiveCommand.Create(Clear);
-        }
 
+            DataBaseCommand = ReactiveCommand.Create(AddResultToDataBaseAsync, this.WhenAnyValue(x => x.ListItems.Count, (count) => count != 0));
+        }
 
         #endregion
 
@@ -296,6 +302,49 @@ namespace Chess.Admin.ViewModels
             CaptureError = ListItems.Where(x => x.BCError == false).Count() + ListItems.Where(x => x.WCError == false).Count();
 
             WeaknessError = ListItems.Where(x => x.BWError == false).Count() + ListItems.Where(x => x.WWError == false).Count();
+        }
+
+        private async void AddResultToDataBaseAsync()
+        {
+            if (User == null) return;
+            try
+            {
+                var name = User.FirstName[..1].ToUpper() + User.FirstName.Substring(1).ToLower();
+
+                var surname = User.LastName[..1].ToUpper() + User.LastName.Substring(1).ToLower();
+
+                using (var context = new ChessDbContext())
+                {
+                    var person = await context.Persons.Where(p => p.FirstName == name
+                                                               && p.LastName == surname).FirstOrDefaultAsync();
+                    if (person != null)
+                    {
+                        person.TotalExercises += Total;
+
+                        person.CaptureError += CaptureError;
+
+                        person.WeaknessError += WeaknessError;
+                    }
+                    else
+                    {
+                        await context.AddAsync(new Person
+                        {
+                            FirstName = name,
+                            LastName = surname,
+                            TotalExercises = Total,
+                            CaptureError = CaptureError,
+                            WeaknessError = WeaknessError
+                        });
+                    }
+                    await context.SaveChangesAsync();
+                }
+
+                Message = "Результаты успешно сохранены";
+            }
+            catch (Exception)
+            {
+                Message = "Что-то пошло не так";
+            }
         }
     }
 }
