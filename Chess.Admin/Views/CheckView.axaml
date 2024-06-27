@@ -10,423 +10,300 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Design.DataContext />
-    <UserControl.Styles>
-        <Style Selector="TextBlock.Header">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
 
-        <Style Selector="TextBlock.report">
-            <Setter Property="Width" Value="150" />
-            <Setter Property="Margin" Value="0,2" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-        </Style>
+    <Grid
+        Margin="10,10"
+        ColumnDefinitions="* 30 * "
+        RowDefinitions="30 30 * 30">
 
-        <Style Selector="ListBoxItem">
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Margin" Value="10, -10" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="FontSize" Value="10" />
-            <Setter Property="Foreground" Value="Blue" />
-        </Style>
+        <TextBlock
+            Grid.Row="0"
+            Grid.ColumnSpan="4"
+            Classes="pageTitle"
+            Text="Проверить задание" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="150"
+                Classes="click"
+                Command="{Binding LoadCommand}"
+                Content="Загрузить ответ" />
+            <Button
+                Width="150"
+                Margin="10"
+                Classes="click"
+                Command="{Binding ClearCommand}"
+                Content="Очистить" />
+            <Button
+                Width="150"
+                Classes="click"
+                Command="{Binding DataBaseCommand}"
+                Content="Сохранить в базу" />
+        </StackPanel>
 
-        <Style Selector="TextBlock.Message">
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="2"
+            Margin="0,10,10,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="report" Text="Всего решено задач" />
+                <TextBlock Text="{Binding Total}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="report" Text="Ошибок на взятиях" />
+                <TextBlock Text="{Binding CaptureError}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="report" Text="Ошибок на слабостях" />
+                <TextBlock Text="{Binding WeaknessError}" />
+            </StackPanel>
+            <DataGrid
+                Height="320"
+                Margin="0,15,0,0"
+                AutoGenerateColumns="False"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                GridLinesVisibility="All"
+                IsReadOnly="True"
+                ItemsSource="{Binding ListItems}">
 
-        <!--  Button style  -->
-        <Style Selector="Button">
-            <Setter Property="Background" Value="#3F72AF" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <ContentPresenter
-                        x:Name="PART_ButtonContentPresenter"
-                        Padding="{TemplateBinding Padding}"
-                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        Content="{TemplateBinding Content}"
-                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        RecognizesAccessKey="True" />
-                </ControlTemplate>
-            </Setter>
-        </Style>
+                <DataGrid.Columns>
 
-        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ButtonContentPresenter">
-            <Setter Property="Background" Value="#112D4E" />
-            <Setter Property="TextBlock.Foreground" Value="White" />
-        </Style>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Id}"
+                        FontSize="10"
+                        Header="#" />
 
-        <Style Selector="Button:disabled /template/ ContentPresenter#PART_ButtonContentPresenter">
-            <Setter Property="Opacity" Value=".7" />
-            <Setter Property="Background" Value="#3F72AF" />
-            <Setter Property="TextBlock.Foreground" Value="White" />
-        </Style>
+                    <DataGridTemplateColumn Width="2*" Header="ВБ">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Classes="error"
+                                    Foreground="{Binding WCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                    Text="{Binding WhiteCapture}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-        <Style Selector="Button.cell /template/ ContentPresenter#PART_ButtonContentPresenter">
-            <Setter Property="Background" Value="{Binding BackgroundColor}" />
-            <Setter Property="CornerRadius" Value="0" />
-        </Style>
+                    <DataGridTemplateColumn Width="2*" Header="СБ">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Classes="error"
+                                    Foreground="{Binding WWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                    Text="{Binding WhiteWeakness}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-        <Style Selector="Button.click">
-            <Setter Property="Width" Value="100" />
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Margin" Value="0 10" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="Background" Value="#e3e3e3" />
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>
+                    <DataGridTemplateColumn Width="2*" Header="ВЧ">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Classes="error"
+                                    Foreground="{Binding BCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                    Text="{Binding BlackCapture}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="10" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Grid
-                        Name="PART_ColumnHeaderRoot"
-                        Background="{TemplateBinding Background}"
-                        ColumnDefinitions="* 1">
+                    <DataGridTemplateColumn Width="2*" Header="СЧ">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Classes="error"
+                                    Foreground="{Binding BWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
+                                    Text="{Binding BlackWeakness}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                        <Grid
-                            Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="0" />
-                            </Grid.ColumnDefinitions>
-                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
-                        </Grid>
-                    </Grid>
-                </ControlTemplate>
-            </Setter>
-        </Style>
-    </UserControl.Styles>
-
-    <SplitView OpenPaneLength="800">
-
-        <Grid
-            Margin="10,10"
-            ColumnDefinitions="* 30 * "
-            RowDefinitions="30 30 * 30">
-
+                </DataGrid.Columns>
+            </DataGrid>
             <TextBlock
-                Grid.Row="0"
-                Grid.ColumnSpan="4"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="16"
-                FontWeight="Bold"
-                Text="Проверить задание" />
-            <StackPanel
-				Margin="0 0 0 10"
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="3"
-                HorizontalAlignment="Center"
-                Orientation="Horizontal">
-                <Button
-                    Width="150"
-                    Classes="click"
-                    Command="{Binding LoadCommand}"
-                    Content="Загрузить ответ" />
-                <Button Margin="10"
-                    Width="150"
-                    Classes="click"
-                    Command="{Binding ClearCommand}"
-                    Content="Очистить" />
-                <Button
-                    Width="150"
-                    Classes="click"
-                    Command="{Binding DataBaseCommand}"
-                    Content="Сохранить в базу" />
-            </StackPanel>
+                Margin="0,10,0,0"
+                FontSize="10"
+                FontStyle="Italic"
+                Text="Взятия белые - ВБ" />
+            <TextBlock
+                FontSize="10"
+                FontStyle="Italic"
+                Text="Слабости белые - СБ" />
+            <TextBlock
+                FontSize="10"
+                FontStyle="Italic"
+                Text="Взятия черные - ВЧ" />
+            <TextBlock
+                FontSize="10"
+                FontStyle="Italic"
+                Text="Слабости черные - СЧ" />
 
-            <StackPanel
-                Grid.Row="2"
-                Grid.Column="2"
-                Margin="0,10,10,10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Classes="report" Text="Всего решено задач" />
-                    <TextBlock Text="{Binding Total}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Classes="report" Text="Ошибок на взятиях" />
-                    <TextBlock Text="{Binding CaptureError}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Classes="report" Text="Ошибок на слабостях" />
-                    <TextBlock Text="{Binding WeaknessError}" />
-                </StackPanel>
-                <DataGrid
-                    Height="320"
-                    Margin="0,15,0,0"
-                    AutoGenerateColumns="False"
-                    BorderBrush="Gray"
-                    BorderThickness="1"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    GridLinesVisibility="All"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding ListItems}">
+        </StackPanel>
 
-                    <DataGrid.Columns>
+        <StackPanel Grid.Row="2" Grid.Column="0">
 
-                        <DataGridTextColumn
-                            Width="*"
-                            Binding="{Binding Id}"
-                            FontSize="10"
-                            Header="#" />
+            <ComboBox
+                Width="320"
+                Margin="0,20,0,0"
+                VerticalContentAlignment="Center"
+                Background="White"
+                Classes="Combo"
+                FontSize="12"
+                FontWeight="DemiBold"
+                IsEnabled="{Binding FileIsLoaded}"
+                ItemsSource="{Binding ListItems}"
+                PlaceholderText="  Выбери упражнение"
+                SelectedIndex="{Binding Index, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Padding="5,0"
+                            VerticalAlignment="Center"
+                            Foreground="Black"
+                            Text="{Binding, Converter={x:Static conv:FuncValueConverters.GetComboboxItem}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
-                        <DataGridTemplateColumn Width="2*" Header="ВБ">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="14"
-                                        FontWeight="DemiBold"
-                                        Foreground="{Binding WCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
-                                        Text="{Binding WhiteCapture}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+            <!--  BOARD  -->
+            <Grid ColumnDefinitions="16 320 30" RowDefinitions="30 320 30">
 
-                        <DataGridTemplateColumn Width="2*" Header="СБ">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="14"
-                                        FontWeight="DemiBold"
-                                        Foreground="{Binding WWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
-                                        Text="{Binding WhiteWeakness}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Width="2*" Header="ВЧ">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="14"
-                                        FontWeight="DemiBold"
-                                        Foreground="{Binding BCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
-                                        Text="{Binding BlackCapture}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn Width="2*" Header="СЧ">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="14"
-                                        FontWeight="DemiBold"
-                                        Foreground="{Binding BWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
-                                        Text="{Binding BlackWeakness}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                    </DataGrid.Columns>
-                </DataGrid>
-                <TextBlock
-                    Margin="0,10,0,0"
-                    FontSize="10"
-                    FontStyle="Italic"
-                    Text="Взятия белые - ВБ" />
-                <TextBlock
-                    FontSize="10"
-                    FontStyle="Italic"
-                    Text="Слабости белые - СБ" />
-                <TextBlock
-                    FontSize="10"
-                    FontStyle="Italic"
-                    Text="Взятия черные - ВЧ" />
-                <TextBlock
-                    FontSize="10"
-                    FontStyle="Italic"
-                    Text="Слабости черные - СЧ" />
-
-            </StackPanel>
-
-            <StackPanel Grid.Row="2" Grid.Column="0">
-
-                <ComboBox
-                    Width="320"
-                    Height="30"
-                    Margin="14,20,0,0"
-                    VerticalContentAlignment="Center"
-                    Background="White"
-                    FontSize="12"
-                    FontWeight="DemiBold"
-                    IsEnabled="{Binding FileIsLoaded}"
-                    ItemsSource="{Binding ListItems}"
-                    PlaceholderText="Выбери упражнение"
-                    SelectedIndex="{Binding Index, Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
+                <!--  Left numbers  -->
+                <ItemsControl
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ItemsSource="{Binding Numbers}">
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Foreground="Black"
-                                Text="{Binding, Converter={x:Static conv:FuncValueConverters.GetComboboxItem}}" />
+                            <Grid Height="40">
+                                <TextBlock
+                                    Padding="5,0"
+                                    VerticalAlignment="Center"
+                                    Classes="questions"
+                                    FontSize="14"
+                                    Text="{Binding}"
+                                    TextAlignment="Right" />
+                            </Grid>
                         </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!--  Top letters  -->
+                <ItemsControl
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Height="21"
+                    ItemsSource="{Binding Letters}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="40">
+                                <TextBlock
+                                    VerticalAlignment="Bottom"
+                                    Classes="questions"
+                                    FontSize="14"
+                                    Text="{Binding}"
+                                    TextAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
 
                 <!--  Board  -->
-                <Grid ColumnDefinitions="16 320 30" RowDefinitions="30 320 30">
-
-                    <!--  Left numbers  -->
-                    <ItemsControl
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        ItemsSource="{Binding Numbers}">
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Classes="Board">
+                    <ItemsControl ItemsSource="{Binding Cells}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="40">
-                                    <TextBlock
-                                        Padding="5,0"
-                                        VerticalAlignment="Center"
-                                        Classes="questions"
-                                        FontSize="14"
-                                        Text="{Binding}"
-                                        TextAlignment="Right" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                                <Button
+                                    Width="41"
+                                    Height="41"
+                                    Margin="0"
+                                    Padding="0"
+                                    Classes="cell">
+                                    <Button.Content>
+                                        <Image Source="{Binding, Converter={x:Static conv:FuncValueConverters.GetBitmap}}" />
+                                    </Button.Content>
+                                </Button>
 
-                    <!--  Top letters  -->
-                    <ItemsControl
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Height="21"
-                        ItemsSource="{Binding Letters}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="40">
-                                    <TextBlock
-                                        VerticalAlignment="Bottom"
-                                        Classes="questions"
-                                        FontSize="14"
-                                        Text="{Binding}"
-                                        TextAlignment="Center" />
-                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
+                                <UniformGrid
+                                    x:Name="Board"
+                                    Classes="questions"
+                                    Columns="8"
+                                    Rows="8" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
+                </Border>
 
-                    <!--  Board  -->
-                    <Border
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Classes="Board">
-                        <ItemsControl ItemsSource="{Binding Cells}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button
-                                        Width="41"
-                                        Height="41"
-                                        Margin="0"
-                                        Padding="0"
-                                        Classes="cell">
-                                        <Button.Content>
-                                            <Image Source="{Binding, Converter={x:Static conv:FuncValueConverters.GetBitmap}}" />
-                                        </Button.Content>
-                                    </Button>
+                <!--  Bottom letters  -->
+                <ItemsControl
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Height="21"
+                    ItemsSource="{Binding Letters}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="40">
+                                <TextBlock
+                                    Classes="questions"
+                                    FontSize="14"
+                                    Text="{Binding}"
+                                    TextAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
 
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid
-                                        x:Name="Board"
-                                        Classes="questions"
-                                        Columns="8"
-                                        Rows="8" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </Border>
+                <!--  Right numbers  -->
+                <ItemsControl
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Width="21"
+                    ItemsSource="{Binding Numbers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="40">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Classes="questions"
+                                    FontSize="14"
+                                    Text="{Binding}"
+                                    TextAlignment="Left" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
 
-                    <!--  Bottom letters  -->
-                    <ItemsControl
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Height="21"
-                        ItemsSource="{Binding Letters}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Width="40">
-                                    <TextBlock
-                                        Classes="questions"
-                                        FontSize="14"
-                                        Text="{Binding}"
-                                        TextAlignment="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
+            <TextBlock
+                Classes="Message"
+                Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
+                Text="{Binding Message}" />
+        </StackPanel>
+    </Grid>
 
-                    <!--  Right numbers  -->
-                    <ItemsControl
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Width="21"
-                        ItemsSource="{Binding Numbers}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="40">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Classes="questions"
-                                        FontSize="14"
-                                        Text="{Binding}"
-                                        TextAlignment="Left" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Grid>
-
-                <TextBlock
-                    Classes="Message"
-                    Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
-                    Text="{Binding Message}" />
-            </StackPanel>
-        </Grid>
-    </SplitView>
 </UserControl>

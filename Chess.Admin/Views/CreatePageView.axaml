@@ -13,57 +13,6 @@
         <vm:CreatePageViewModel />
     </Design.DataContext>
 
-    <UserControl.Resources>
-        <SolidColorBrush x:Key="ItemForeground">Black</SolidColorBrush>
-    </UserControl.Resources>
-
-    <UserControl.Styles>
-        <Style Selector="TextBlock.Header">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
-
-        <Style Selector="ListBoxItem">
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Margin" Value="10, -10" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="FontSize" Value="10" />
-            <Setter Property="Foreground" Value="Blue" />
-        </Style>
-
-        <Style Selector="TextBlock.Message">
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-
-        <Style Selector="ComboBox.Combo">
-            <Setter Property="Height" Value="30" />
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Padding" Value="5" />
-        </Style>
-
-        <Style Selector="ComboBoxItem">
-            <Setter Property="Foreground" Value="{DynamicResource ItemForeground}" />
-        </Style>
-
-        <Style Selector="Button">
-            <Setter Property="Width" Value="100" />
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Margin" Value="0 10" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="Background" Value="#e3e3e3" />
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>
-    </UserControl.Styles>
-
     <Grid
         Margin="40,10"
         ColumnDefinitions="300 70 70 70 70 70"
@@ -73,10 +22,7 @@
         <TextBlock
             Grid.Row="0"
             Grid.ColumnSpan="6"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="Bold"
+            Classes="pageTitle"
             Text="Сформировать задание" />
 
         <TextBlock
@@ -117,6 +63,7 @@
             Margin="0"
             Padding="0,1"
             BorderBrush="Black"
+            Classes="date"
             CornerRadius="0"
             SelectedDate="{Binding CurrentDate}" />
         <ComboBox
@@ -201,12 +148,14 @@
             <Button
                 Width="125"
                 Margin="10,8"
+                Classes="click"
                 Command="{Binding Clear}"
                 Content="Очистить" />
 
             <Button
                 Width="140"
                 Margin="0,8"
+                Classes="click"
                 Command="{Binding CreateList}"
                 Content="Создать список" />
         </StackPanel>
@@ -235,6 +184,7 @@
             Grid.Row="7"
             Grid.Column="0"
             Width="150"
+            Classes="click"
             Command="{Binding CreateFile}"
             Content="Сохранить в файл" />
         <TextBlock

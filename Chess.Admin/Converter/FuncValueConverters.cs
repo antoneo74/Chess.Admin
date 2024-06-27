@@ -3,6 +3,8 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Chess.Admin.Models;
+using ChessDB.Model;
+using System;
 
 namespace Chess.Admin.Converter
 {
@@ -21,11 +23,34 @@ namespace Chess.Admin.Converter
         public static FuncValueConverter<bool, IBrush?> GetErrorForeground { get; } =
         new FuncValueConverter<bool, IBrush?>(s =>
         {
-            if (s==true) return new SolidColorBrush(Colors.Green);
+            if (s == true) return new SolidColorBrush(Colors.Green);
 
             return new SolidColorBrush(Colors.Red);
         });
-        
+
+        public static FuncValueConverter<Person, string?> GetSuccessPercent { get; } =
+        new FuncValueConverter<Person, string?>(s =>
+        {
+            if (s == null || s.TotalExercises == 0) return null;
+
+            return Math.Round((s.TotalExercises - s.WeaknessError - s.CaptureError) * 100.0 / s.TotalExercises, 2).ToString();
+        });
+
+        public static FuncValueConverter<Person, string?> GetCaptureErrorPercent { get; } =
+        new FuncValueConverter<Person, string?>(s =>
+        {
+            if (s == null || s.TotalExercises == 0) return null;
+
+            return Math.Round(s.CaptureError * 100.0 / s.TotalExercises, 2).ToString();
+        });
+
+        public static FuncValueConverter<Person, string?> GetWeaknessErrorPercent { get; } =
+        new FuncValueConverter<Person, string?>(s =>
+        {
+            if (s == null || s.TotalExercises == 0) return null;
+
+            return Math.Round(s.WeaknessError * 100.0 / s.TotalExercises, 2).ToString();
+        });
 
         public static FuncValueConverter<Exercise?, string?> GetComboboxItem { get; } =
             new FuncValueConverter<Exercise?, string?>(s =>

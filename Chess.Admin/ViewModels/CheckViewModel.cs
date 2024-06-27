@@ -45,8 +45,6 @@ namespace Chess.Admin.ViewModels
 
         private ObservableCollection<Exercise> _listItems;
 
-        private bool _fileIsLoaded;
-
         private int _total;
 
         private int _captureError;

@@ -121,7 +121,7 @@ namespace Chess.Admin.ViewModels
 
             CreateList = ReactiveCommand.Create(CreateExercisesList, this.WhenAnyValue(x => x.Count, count => count != 0));
 
-            CreateFile = ReactiveCommand.CreateFromTask(CreateExercisesFile, this.WhenAnyValue(x=>x.FenList.Count, count => count != 0));
+            CreateFile = ReactiveCommand.CreateFromTask(CreateExercisesFile, this.WhenAnyValue(x => x.FenList.Count, count => count != 0));
         }
 
         #endregion
@@ -156,7 +156,7 @@ namespace Chess.Admin.ViewModels
                 Message = "Что-то пошло не так";
             }
         }
-        
+
         /// <summary>
         /// SaveFileDialog
         /// </summary>
@@ -223,7 +223,7 @@ namespace Chess.Admin.ViewModels
 
                     FenList = new ObservableCollection<string>(filter.Take(Count));
 
-                    Message = "Список успешно подготовлен";
+                    Message = FenList.Count != 0 ? "Список успешно подготовлен" : "Список пуст";
                 }
             }
             catch (Exception)
@@ -239,7 +239,7 @@ namespace Chess.Admin.ViewModels
             FenList.Clear();
 
             Strategy = Tactics = Score = Technique = Grade = -1;
-            
+
             Message = string.Empty;
 
             Count = 0;

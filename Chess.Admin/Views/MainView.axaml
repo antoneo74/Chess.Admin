@@ -9,50 +9,19 @@
     d:DesignWidth="800"
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <!--
-            This only sets the DataContext for the previewer in an IDE,
-            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
-        -->
-        <vm:MainViewModel />
-    </Design.DataContext>
-
-    <UserControl.Styles>
-        <Style Selector="TextBlock.Menu">
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="Margin" Value="10,0"/>
-        </Style>
-
-		<Style Selector="TextBlock.Title">
-			<Setter Property="Foreground" Value="Black" />
-			<Setter Property="FontWeight" Value="DemiBold" />
-			<Setter Property="VerticalAlignment" Value="Center" />
-			<Setter Property="Margin" Value="10,0"/>
-		</Style>
-
-        <Style Selector="Button">
-            <Setter Property="Background" Value="#f2f2f2" />
-            <Setter Property="Width" Value="40" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>       
-
-        <Style Selector="Svg">
-            <Setter Property="Width" Value="35" />
-        </Style>        
-    </UserControl.Styles>
+    <Design.DataContext />
 
     <Grid RowDefinitions="30 *">
         <StackPanel
-			Margin="0"
-			Background="#e3e3e3"
             Grid.Row="0"
-			VerticalAlignment="Center"
+            Margin="0"
+            VerticalAlignment="Center"
+            Background="#dedede"
             Orientation="Horizontal">
-            <Svg Margin="10 5" Width="20" Path="/Assets/king.svg" />
+            <Svg
+                Width="20"
+                Margin="10,5"
+                Path="/Assets/king.svg" />
             <TextBlock Classes="Title" Text="Chess.Admin v1.0" />
         </StackPanel>
 
@@ -63,18 +32,21 @@
             DisplayMode="CompactOverlay"
             IsPaneOpen="{Binding IsOpen}"
             OpenPaneLength="250"
-            PaneBackground="#e3e3e3"
+            PaneBackground="#dedede"
             PanePlacement="Left">
             <SplitView.Pane>
                 <StackPanel Margin="5,30,0,0">
-                    <Button Command="{Binding OpenPanel}">
+                    <Button Classes="Menu" Command="{Binding OpenPanel}">
                         <Button.Content>
                             <Svg Path="/Assets/main.svg" />
                         </Button.Content>
                     </Button>
 
                     <StackPanel Margin="0,30,0,0" Orientation="Horizontal">
-                        <Button Command="{Binding ContextPageCommand}" CommandParameter="0">
+                        <Button
+                            Classes="Menu"
+                            Command="{Binding ContextPageCommand}"
+                            CommandParameter="0">
                             <Button.Content>
                                 <Svg Path="/Assets/add.svg" />
                             </Button.Content>
@@ -83,7 +55,10 @@
                     </StackPanel>
 
                     <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                        <Button Command="{Binding ContextPageCommand}" CommandParameter="1">
+                        <Button
+                            Classes="Menu"
+                            Command="{Binding ContextPageCommand}"
+                            CommandParameter="1">
                             <Button.Content>
                                 <Svg Path="/Assets/create.svg" />
                             </Button.Content>
@@ -92,7 +67,10 @@
                     </StackPanel>
 
                     <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                        <Button Command="{Binding ContextPageCommand}" CommandParameter="2">
+                        <Button
+                            Classes="Menu"
+                            Command="{Binding ContextPageCommand}"
+                            CommandParameter="2">
                             <Button.Content>
                                 <Svg Path="/Assets/check.svg" />
                             </Button.Content>
@@ -101,7 +79,10 @@
                     </StackPanel>
 
                     <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                        <Button Command="{Binding ContextPageCommand}" CommandParameter="3">
+                        <Button
+                            Classes="Menu"
+                            Command="{Binding ContextPageCommand}"
+                            CommandParameter="3">
                             <Button.Content>
                                 <Svg Path="/Assets/statistic.svg" />
                             </Button.Content>

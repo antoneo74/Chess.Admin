@@ -13,53 +13,6 @@
         <vm:AddPageViewModel />
     </Design.DataContext>
 
-    <UserControl.Resources>
-        <SolidColorBrush x:Key="ItemForeground">Black</SolidColorBrush>
-    </UserControl.Resources>
-
-    <UserControl.Styles>
-        <Style Selector="TextBlock.Header">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
-
-        <Style Selector="TextBlock.Message">
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-
-        <Style Selector="TextBox">
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>
-
-        <Style Selector="ComboBox.Combo">
-            <Setter Property="Height" Value="30" />
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="Padding" Value="5" />
-        </Style>
-
-        <Style Selector="ComboBoxItem">
-            <Setter Property="Foreground" Value="{DynamicResource ItemForeground}" />
-        </Style>
-
-        <Style Selector="Button">
-            <Setter Property="Width" Value="100" />
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Margin" Value="0 10" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="DemiBold" />
-            <Setter Property="Foreground" Value="Black" />
-            <Setter Property="Background" Value="#e3e3e3" />
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>
-    </UserControl.Styles>
-
     <Grid
         Margin="10"
         ColumnDefinitions="* 70 70 70 70 70"
@@ -69,10 +22,7 @@
         <TextBlock
             Grid.Row="0"
             Grid.ColumnSpan="6"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="Bold"
+            Classes="pageTitle"
             Text="Добавить FEN в базу" />
 
         <TextBlock
@@ -171,9 +121,13 @@
             Grid.Row="3"
             Grid.Column="0"
             Orientation="Horizontal">
-            <Button Command="{Binding Add}" Content="Добавить" />
+            <Button
+                Classes="click"
+                Command="{Binding Add}"
+                Content="Добавить" />
             <Button
                 Margin="10"
+                Classes="click"
                 Command="{Binding ClearAdd}"
                 Content="Очистить" />
         </StackPanel>
@@ -190,10 +144,7 @@
         <TextBlock
             Grid.Row="5"
             Grid.ColumnSpan="6"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="16"
-            FontWeight="Bold"
+            Classes="pageTitle"
             Text="Редактировать параметры FEN" />
 
         <TextBlock
@@ -229,8 +180,8 @@
         <TextBox
             Grid.Row="7"
             Grid.Column="0"
-			Margin="0,0,5,0"
-			Text="{Binding FenEdit}"
+            Margin="0,0,5,0"
+            Text="{Binding FenEdit}"
             Watermark="Введи FEN" />
         <ComboBox
             Grid.Row="7"
@@ -292,9 +243,13 @@
             Grid.Row="8"
             Grid.Column="0"
             Orientation="Horizontal">
-            <Button Command="{Binding Find}" Content="Найти" />
+            <Button
+                Classes="click"
+                Command="{Binding Find}"
+                Content="Найти" />
             <Button
                 Margin="10"
+                Classes="click"
                 Command="{Binding ClearEdit}"
                 Content="Очистить" />
         </StackPanel>
@@ -308,24 +263,26 @@
                 Grid.Column="0"
                 Width="165"
                 Margin="5,10"
-				Command="{Binding SaveChanges}"
+                Classes="click"
+                Command="{Binding SaveChanges}"
                 Content="Сохранить изменения" />
             <Button
                 Grid.Row="9"
                 Grid.Column="0"
                 Width="165"
                 Margin="5,10,0,0"
-				Command="{Binding DeleteFen}"
+                Classes="click"
+                Command="{Binding DeleteFen}"
                 Content="Удалить FEN" />
         </StackPanel>
-        <TextBlock 
-			Margin="10"
+        <TextBlock
             Grid.Row="9"
             Grid.Column="1"
             Grid.ColumnSpan="5"
+            Margin="10"
             Classes="Message"
             Foreground="{Binding EditMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
             Text="{Binding EditMessage}" />
-        
+
     </Grid>
 </UserControl>
