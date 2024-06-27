@@ -183,6 +183,8 @@ namespace Chess.Admin.ViewModels
                 using (ChessDbContext context = new())
                 {
                     People = new ObservableCollection<Person>([.. context.Persons]);
+
+                    Message = People.Count == 0 ? "Список пуст" : "Успешно";                    
                 }
             }
             catch (Exception)
