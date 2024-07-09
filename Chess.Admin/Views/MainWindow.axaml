@@ -9,8 +9,8 @@
         Icon="/Assets/icon_chess.ico"
         Title="Chess.Admin"
 		MaxHeight="600"
-		MaxWidth="800"
+		MaxWidth="900"
 		MinHeight="600"
-		MinWidth="800">
+		MinWidth="900">
         <views:MainView />
 </Window>

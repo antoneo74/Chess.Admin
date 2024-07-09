@@ -62,7 +62,7 @@
                 <TextBlock Classes="report" Text="Ошибок на слабостях" />
                 <TextBlock Text="{Binding WeaknessError}" />
             </StackPanel>
-            <DataGrid
+			<DataGrid
                 Height="320"
                 Margin="0,15,0,0"
                 AutoGenerateColumns="False"
@@ -72,62 +72,63 @@
                 CanUserSortColumns="False"
                 GridLinesVisibility="All"
                 IsReadOnly="True"
-                ItemsSource="{Binding ListItems}">
+                ItemsSource="{Binding ListItems}"
+				SelectedIndex="{Binding Index, Mode=TwoWay}">
 
-                <DataGrid.Columns>
+				<DataGrid.Columns>
 
-                    <DataGridTextColumn
+					<DataGridTextColumn
                         Width="*"
                         Binding="{Binding Id}"
                         FontSize="10"
                         Header="#" />
 
-                    <DataGridTemplateColumn Width="2*" Header="ВБ">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
+					<DataGridTemplateColumn Width="2*" Header="ВБ">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
                                     Classes="error"
                                     Foreground="{Binding WCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
                                     Text="{Binding WhiteCapture}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Width="2*" Header="СБ">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
+					<DataGridTemplateColumn Width="2*" Header="СБ">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
                                     Classes="error"
                                     Foreground="{Binding WWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
                                     Text="{Binding WhiteWeakness}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Width="2*" Header="ВЧ">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
+					<DataGridTemplateColumn Width="2*" Header="ВЧ">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
                                     Classes="error"
                                     Foreground="{Binding BCError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
                                     Text="{Binding BlackCapture}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Width="2*" Header="СЧ">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
+					<DataGridTemplateColumn Width="2*" Header="СЧ">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
                                     Classes="error"
                                     Foreground="{Binding BWError, Converter={x:Static, conv:FuncValueConverters.GetErrorForeground}}"
                                     Text="{Binding BlackWeakness}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 
-                </DataGrid.Columns>
-            </DataGrid>
+				</DataGrid.Columns>
+			</DataGrid>
             <TextBlock
                 Margin="0,10,0,0"
                 FontSize="10"

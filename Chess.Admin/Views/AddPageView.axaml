@@ -6,119 +6,37 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="550"
+    d:DesignWidth="760"
     mc:Ignorable="d">
     <Design.DataContext>
         <vm:AddPageViewModel />
     </Design.DataContext>
 
     <Grid
-        Margin="10"
-        ColumnDefinitions="* 70 70 70 70 70"
-        RowDefinitions="50 30 30 30 20 30 30 30 30 30">
+        Margin="20"
+        ColumnDefinitions="300 20 20 2* 20"
+        RowDefinitions="30 30 40 30 20 30 * 30"
+        ShowGridLines="False">
 
         <!--  Add Block  -->
-        <TextBlock
-            Grid.Row="0"
-            Grid.ColumnSpan="6"
-            Classes="pageTitle"
-            Text="Добавить FEN в базу" />
 
         <TextBlock
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="0"
             Classes="Header"
-            Text="FEN" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
-            Classes="Header"
-            Text="Стратегия" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="2"
-            Classes="Header"
-            Text="Тактика" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="3"
-            Classes="Header"
-            Text="Счет" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="4"
-            Classes="Header"
-            Text="Техника" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="5"
-            Classes="Header"
-            Text="Оценка" />
+            Text="Добавить FEN" />
+
         <TextBox
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="0"
             Margin="0,0,5,0"
             Text="{Binding Fen}"
             Watermark="Введи FEN" />
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="1"
-            Classes="Combo"
-            SelectedIndex="{Binding Strategy}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="2"
-            Classes="Combo"
-            SelectedIndex="{Binding Tactics}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="3"
-            Classes="Combo"
-            SelectedIndex="{Binding Score}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="4"
-            Classes="Combo"
-            SelectedIndex="{Binding Technique}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="5"
-            Classes="Combo"
-            SelectedIndex="{Binding Grade}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
+
 
         <StackPanel
-            Grid.Row="3"
+            Grid.Row="2"
             Grid.Column="0"
             Orientation="Horizontal">
             <Button
@@ -134,114 +52,31 @@
 
         <TextBlock
             Grid.Row="3"
-            Grid.Column="1"
+            Grid.Column="0"
             Grid.ColumnSpan="5"
             Classes="Message"
             Foreground="{Binding AddMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
             Text="{Binding AddMessage}" />
 
         <!--  Edit Block  -->
-        <TextBlock
-            Grid.Row="5"
-            Grid.ColumnSpan="6"
-            Classes="pageTitle"
-            Text="Редактировать параметры FEN" />
+
 
         <TextBlock
-            Grid.Row="6"
-            Grid.Column="0"
-            Classes="Header"
-            Text="Найти по FEN" />
-        <TextBlock
-            Grid.Row="6"
-            Grid.Column="1"
-            Classes="Header"
-            Text="Стратегия" />
-        <TextBlock
-            Grid.Row="6"
-            Grid.Column="2"
-            Classes="Header"
-            Text="Тактика" />
-        <TextBlock
-            Grid.Row="6"
+            Grid.Row="0"
             Grid.Column="3"
             Classes="Header"
-            Text="Счет" />
-        <TextBlock
-            Grid.Row="6"
-            Grid.Column="4"
-            Classes="Header"
-            Text="Техника" />
-        <TextBlock
-            Grid.Row="6"
-            Grid.Column="5"
-            Classes="Header"
-            Text="Оценка" />
+            Text="Найти по FEN" />
+
         <TextBox
-            Grid.Row="7"
-            Grid.Column="0"
+            Grid.Row="1"
+            Grid.Column="3"
             Margin="0,0,5,0"
             Text="{Binding FenEdit}"
             Watermark="Введи FEN" />
-        <ComboBox
-            Grid.Row="7"
-            Grid.Column="1"
-            Classes="Combo"
-            SelectedIndex="{Binding StrategyEdit}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="7"
-            Grid.Column="2"
-            Classes="Combo"
-            SelectedIndex="{Binding TacticsEdit}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="7"
-            Grid.Column="3"
-            Classes="Combo"
-            SelectedIndex="{Binding ScoreEdit}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="7"
-            Grid.Column="4"
-            Classes="Combo"
-            SelectedIndex="{Binding TechniqueEdit}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
-        <ComboBox
-            Grid.Row="7"
-            Grid.Column="5"
-            Classes="Combo"
-            SelectedIndex="{Binding GradeEdit}">
-            <ComboBox.Items>1</ComboBox.Items>
-            <ComboBox.Items>2</ComboBox.Items>
-            <ComboBox.Items>3</ComboBox.Items>
-            <ComboBox.Items>4</ComboBox.Items>
-            <ComboBox.Items>5</ComboBox.Items>
-        </ComboBox>
 
         <StackPanel
-            Grid.Row="8"
-            Grid.Column="0"
+            Grid.Row="2"
+            Grid.Column="3"
             Orientation="Horizontal">
             <Button
                 Classes="click"
@@ -255,34 +90,171 @@
         </StackPanel>
 
         <StackPanel
-            Grid.Row="8"
+            Grid.Row="4"
             Grid.Column="1"
             Orientation="Horizontal">
             <Button
-                Grid.Row="9"
-                Grid.Column="0"
                 Width="165"
                 Margin="5,10"
                 Classes="click"
                 Command="{Binding SaveChanges}"
                 Content="Сохранить изменения" />
             <Button
-                Grid.Row="9"
-                Grid.Column="0"
                 Width="165"
                 Margin="5,10,0,0"
                 Classes="click"
                 Command="{Binding DeleteFen}"
                 Content="Удалить FEN" />
         </StackPanel>
-        <TextBlock
-            Grid.Row="9"
-            Grid.Column="1"
-            Grid.ColumnSpan="5"
-            Margin="10"
-            Classes="Message"
-            Foreground="{Binding EditMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
-            Text="{Binding EditMessage}" />
+
+        <!--  BOARD  -->
+        <Grid
+            Grid.Row="6"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            ColumnDefinitions="16 280 30"
+            RowDefinitions="30 280 30">
+
+            <!--  Left numbers  -->
+            <ItemsControl
+                Grid.Row="1"
+                Grid.Column="0"
+                ItemsSource="{Binding Numbers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="35">
+                            <TextBlock
+                                Padding="5,0"
+                                VerticalAlignment="Center"
+                                Classes="questions"
+                                FontSize="14"
+                                Text="{Binding}"
+                                TextAlignment="Right" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--  Top letters  -->
+            <ItemsControl
+                Grid.Row="0"
+                Grid.Column="1"
+                Height="21"
+                ItemsSource="{Binding Letters}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="35">
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                Classes="questions"
+                                FontSize="14"
+                                Text="{Binding}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <!--  Board  -->
+            <Border
+                Grid.Row="1"
+                Grid.Column="1"
+                Classes="Board">
+                <ItemsControl ItemsSource="{Binding Cells}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Width="36"
+                                Height="36"
+                                Margin="0"
+                                Padding="0"
+                                Classes="cell">
+                                <Button.Content>
+                                    <Image Source="{Binding, Converter={x:Static conv:FuncValueConverters.GetBitmap}}" />
+                                </Button.Content>
+                            </Button>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid
+                                x:Name="Board"
+                                Classes="questions"
+                                Columns="8"
+                                Rows="8" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Border>
+
+            <!--  Bottom letters  -->
+            <ItemsControl
+                Grid.Row="2"
+                Grid.Column="1"
+                Height="21"
+                ItemsSource="{Binding Letters}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="35">
+                            <TextBlock
+                                Classes="questions"
+                                FontSize="14"
+                                Text="{Binding}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <!--  Right numbers  -->
+            <ItemsControl
+                Grid.Row="1"
+                Grid.Column="2"
+                Width="21"
+                ItemsSource="{Binding Numbers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="35">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Classes="questions"
+                                FontSize="14"
+                                Text="{Binding}"
+                                TextAlignment="Left" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+		<DataGrid GridLinesVisibility="All"
+            Grid.Row="6"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            AutoGenerateColumns="True"
+			ItemsSource="{Binding ListItems}">
+			<DataGrid.Styles>
+				<Style Selector="DataGridCell /template/ ContentPresenter">
+					<Setter Property="BorderBrush" Value="Red" />
+					<Setter Property="BorderThickness" Value="2" />
+					<Setter Property="FontSize" Value="10"/>
+					<Setter Property="Margin" Value="0"/>
+					<Setter Property="Padding" Value="0"/>
+				</Style>
+			</DataGrid.Styles>
+		</DataGrid>
 
     </Grid>
 </UserControl>

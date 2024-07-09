@@ -1,9 +1,12 @@
 using Chess.Admin.Extensions;
+using Chess.Admin.Models;
 using ChessDB;
 using ChessDB.Model;
 using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 
@@ -11,8 +14,12 @@ namespace Chess.Admin.ViewModels
 {
     public class AddPageViewModel : ViewModelBase
     {
-        #region Private members
+        public static IEnumerable<char> Numbers => "87654321";
 
+        public static IEnumerable<char> Letters => "ABCDEFGH";
+
+        #region Private members
+        private ObservableCollection<Fen> _listItems;
         private string _fen = string.Empty;
         private int _strategy;
         private int _tactics;
@@ -28,9 +35,31 @@ namespace Chess.Admin.ViewModels
         private int _gradeEdit;
         private string _editMessage = string.Empty;
         private bool _isFound;
+        private Board? _board;
+        private ObservableCollection<Cell> _cells;
         #endregion
 
         #region Public members
+        public ObservableCollection<Fen> ListItems
+        {
+            get => _listItems;
+
+            set => this.RaiseAndSetIfChanged(ref _listItems, value);
+        }
+
+        public Board? Board
+        {
+            get => _board;
+
+            set => this.RaiseAndSetIfChanged(ref _board, value);
+        }
+
+        public ObservableCollection<Cell> Cells
+        {
+            get => _cells;
+
+            set => this.RaiseAndSetIfChanged(ref _cells, value);
+        }
 
         public bool IsFound
         {
@@ -155,6 +184,14 @@ namespace Chess.Admin.ViewModels
         #region Constructor
         public AddPageViewModel()
         {
+            _board = new Board();
+
+            _cells = new ObservableCollection<Cell>(_board.BoardToList());
+
+            _listItems = [];
+
+            GetAllFens();
+
             Add = ReactiveCommand.Create(AddFenAsync, this.WhenAnyValue(x => x.Fen, (fen) => !string.IsNullOrWhiteSpace(fen)));
 
             ClearAdd = ReactiveCommand.Create(ClearAddFields);
@@ -228,6 +265,24 @@ namespace Chess.Admin.ViewModels
             catch (Exception)
             {
                 AddMessage = "Данный FEN уже есть в базе";
+            }
+        }
+
+
+        private void GetAllFens()
+        {
+            try
+            {
+                using(ChessDbContext context = new())
+                {
+                    var fens = context.Fens.ToList();
+                    _listItems =  new ObservableCollection<Fen>(fens);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
