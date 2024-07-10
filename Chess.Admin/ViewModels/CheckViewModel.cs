@@ -185,7 +185,7 @@ namespace Chess.Admin.ViewModels
             {
                 Clear();
 
-                Message = "Что-то пошло не так";
+                Message = "Файл имеет неправильный формат";
             }
         }
 
