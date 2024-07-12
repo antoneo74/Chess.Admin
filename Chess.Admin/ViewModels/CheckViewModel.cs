@@ -295,6 +295,7 @@ namespace Chess.Admin.ViewModels
                 ListItems.Add(item);
             }
 
+            // each exercise has 4 questions            
             Total = ListItems.Count * 4;
 
             CaptureError = ListItems.Where(x => x.BCError == false).Count() + ListItems.Where(x => x.WCError == false).Count();

@@ -70,6 +70,15 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
 
+	<!--  Style for page small title  -->
+
+	<Style Selector="TextBlock.pageTitleSmall">
+		<Setter Property="FontSize" Value="12" />
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+	</Style>
+
 
     <!--  TEXTBOX  -->
     <Style Selector="TextBox">
@@ -105,12 +114,13 @@
     </Style>
 
 
-    <!--  DATAGRID  -->
+    <!--  DATAGRID  
 
     <Style Selector="DataGridColumnHeader">
         <Setter Property="FontSize" Value="10" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Padding" Value="0" />
+		<Setter Property="Background"    Value="Gray"/>
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
@@ -132,7 +142,7 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
+    </Style>-->
 
 
     <!--  BUTTON  -->
