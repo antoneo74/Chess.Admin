@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChessDB.Migrations
 {
     [DbContext(typeof(ChessDbContext))]
-    [Migration("20240626164150_start")]
-    partial class start
+    [Migration("20240627185319_Start")]
+    partial class Start
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

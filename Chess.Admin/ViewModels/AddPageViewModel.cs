@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using Chess.Admin.Extensions;
 using Chess.Admin.Models;
 using ChessDB;
@@ -34,9 +35,13 @@ namespace Chess.Admin.ViewModels
         private int _techniqueEdit;
         private int _gradeEdit;
         private string _editMessage = string.Empty;
+        private string _searchMessage = string.Empty;
+
+        private string _searchingFen = string.Empty;
         private bool _isFound;
         private Board? _board;
         private ObservableCollection<Cell> _cells;
+
         #endregion
 
         #region Public members
@@ -117,11 +122,25 @@ namespace Chess.Admin.ViewModels
             set { this.RaiseAndSetIfChanged(ref _addMessage, value); }
         }
 
+        public string SearchMessage
+        {
+            get { return _searchMessage; }
+
+            set { this.RaiseAndSetIfChanged(ref _searchMessage, value); }
+        }
+
         public string FenEdit
         {
             get { return _fenEdit; }
 
             set { this.RaiseAndSetIfChanged(ref _fenEdit, value); }
+        }
+
+        public string SearchingFen
+        {
+            get { return _searchingFen; }
+
+            set { this.RaiseAndSetIfChanged(ref _searchingFen, value); }
         }
 
         public int StrategyEdit
@@ -196,7 +215,7 @@ namespace Chess.Admin.ViewModels
 
             ClearAdd = ReactiveCommand.Create(ClearAddFields);
 
-            Find = ReactiveCommand.Create(FindFenAsync, this.WhenAnyValue(x => x.FenEdit, (fen) => !string.IsNullOrEmpty(fen)));
+            Find = ReactiveCommand.Create(FindFen, this.WhenAnyValue(x => x.SearchingFen, (fen) => !string.IsNullOrEmpty(fen)));
 
             ClearEdit = ReactiveCommand.Create(ClearEditFields);
 
@@ -261,6 +280,7 @@ namespace Chess.Admin.ViewModels
                     await context.SaveChangesAsync();
                 }
                 AddMessage = "Fen успешно добавлен в базу";
+                GetAllFens();
             }
             catch (Exception)
             {
@@ -273,10 +293,10 @@ namespace Chess.Admin.ViewModels
         {
             try
             {
-                using(ChessDbContext context = new())
+                using (ChessDbContext context = new())
                 {
                     var fens = context.Fens.ToList();
-                    _listItems =  new ObservableCollection<Fen>(fens);
+                    ListItems = new ObservableCollection<Fen>(fens);
                 }
             }
             catch (Exception)
@@ -289,48 +309,40 @@ namespace Chess.Admin.ViewModels
         /// <summary>
         /// Find fen by name
         /// </summary>
-        private async void FindFenAsync()
+        private void FindFen()
         {
-            FenEdit = FenEdit.Normalization();
+            SearchingFen = SearchingFen.Normalization();
 
-            if (!FenEdit.IsCorrect())
+            if (!SearchingFen.IsCorrect())
             {
-                EditMessage = "FEN имеет некорректный формат";
+                SearchMessage = "FEN имеет некорректный формат";
                 return;
             }
 
-            try
+            foreach (var item in ListItems)
             {
-                using (ChessDbContext context = new())
+                if(item.Description == SearchingFen)
                 {
-                    var fen = await context.Fens.Where(x => x.Description == FenEdit).FirstOrDefaultAsync();
+                    SearchMessage = "Успешно! FEN доступен для редактирования";
+                    IsFound = true;
 
-                    if (fen == null)
-                    {
-                        EditMessage = "FEN отсутствует в базе";
-                    }
-                    else
-                    {
-                        EditMessage = "Успешно! Введи новые параметры для FEN";
+                    FenEdit = SearchingFen;
 
-                        IsFound = true;
+                    StrategyEdit = item.Strategy;
 
-                        StrategyEdit = fen.Strategy;
+                    TacticsEdit = item.Tactics;
 
-                        TacticsEdit = fen.Tactics;
+                    ScoreEdit = item.Score;
 
-                        ScoreEdit = fen.Score;
+                    TechniqueEdit = item.Technique;
 
-                        TechniqueEdit = fen.Technique;
+                    GradeEdit = item.Grade;
 
-                        GradeEdit = fen.Grade;
-                    }
+                    return;
                 }
             }
-            catch (Exception)
-            {
-                EditMessage = "Что-то пошло не так";
-            }
+            SearchMessage = "FEN отсутствует в базе";
+            
         }
 
         /// <summary>

@@ -1,16 +1,16 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Chess.Admin.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:Chess.Admin.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Chess.Admin.Views.MainWindow"
-        Icon="/Assets/icon_chess.ico"
-        Title="Chess.Admin"
-		MaxHeight="600"
-		MaxWidth="900"
-		MinHeight="600"
-		MinWidth="900">
-        <views:MainView />
+<Window
+    x:Class="Chess.Admin.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:Chess.Admin.Views"
+    xmlns:vm="using:Chess.Admin.ViewModels"
+    Title="Chess.Admin"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Icon="/Assets/icon_chess.ico"
+    WindowState="Maximized"
+    mc:Ignorable="d">
+    <views:MainView />
 </Window>
