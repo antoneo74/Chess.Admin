@@ -73,6 +73,8 @@ namespace Chess.Admin.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isFound, value);
         }
 
+
+        #region Add fen block public members
         public string Fen
         {
             get { return _fen; }
@@ -121,6 +123,9 @@ namespace Chess.Admin.ViewModels
 
             set { this.RaiseAndSetIfChanged(ref _addMessage, value); }
         }
+
+        #endregion
+
 
         public string SearchMessage
         {
@@ -324,6 +329,7 @@ namespace Chess.Admin.ViewModels
                 if(item.Description == SearchingFen)
                 {
                     SearchMessage = "Успешно! FEN доступен для редактирования";
+
                     IsFound = true;
 
                     FenEdit = SearchingFen;
@@ -411,6 +417,8 @@ namespace Chess.Admin.ViewModels
                         await context.SaveChangesAsync();
 
                         EditMessage = "Параметры FEN успешно изменены";
+
+                        GetAllFens();
                     }
                 }
             }

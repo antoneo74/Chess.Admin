@@ -64,6 +64,13 @@ namespace Chess.Admin.Converter
                 return title;
             });
 
+        public static FuncValueConverter<int, string> GetValueFromIndexForDataGrid { get; } =
+            new FuncValueConverter<int, string>(s =>
+            {
+                string value = (++s).ToString();
+                return value;
+            });
+
         public static FuncValueConverter<Cell, Bitmap?> GetBitmap { get; } =
         new FuncValueConverter<Cell, Bitmap?>(s =>
         {

@@ -138,9 +138,10 @@
 
             <TextBlock
                 Grid.Row="3"
-                Grid.Column="1"
+                Grid.Column="3"
                 Grid.ColumnSpan="5"
                 Classes="Message"
+				HorizontalAlignment="Left"
                 Foreground="{Binding AddMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
                 Text="{Binding AddMessage}" />
 
@@ -182,7 +183,10 @@
                 BorderBrush="Gray"
                 BorderThickness="1"
                 CornerRadius="5">
-                <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Text="{Binding FenEdit}" />
+                <TextBlock
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding FenEdit}" />
             </Border>
 
             <ComboBox
@@ -263,9 +267,10 @@
                     Content="Удалить FEN" />
             </StackPanel>
             <TextBlock
-                Grid.Row="9"
-                Grid.Column="1"
+                Grid.Row="8"
+                Grid.Column="3"
                 Grid.ColumnSpan="5"
+				HorizontalAlignment="Left"
                 Margin="10"
                 Classes="Message"
                 Foreground="{Binding EditMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
@@ -301,13 +306,13 @@
                     Command="{Binding ClearEdit}"
                     Content="Очистить" />
             </StackPanel>
-			<TextBlock
-						   Grid.Row="5"
-						   Grid.Column="9"
-						   Margin="10"
-						   Classes="Message"
-						   Foreground="{Binding SearchMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
-						   Text="{Binding SearchMessage}" />
+            <TextBlock
+                Grid.Row="5"
+                Grid.Column="9"
+                Margin="10"
+                Classes="Message"
+                Foreground="{Binding SearchMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
+                Text="{Binding SearchMessage}" />
 
             <!--  BOARD  -->
             <Grid
@@ -456,7 +461,8 @@
                 CanUserSortColumns="True"
                 GridLinesVisibility="None"
                 IsReadOnly="True"
-                ItemsSource="{Binding ListItems, Mode=TwoWay}">
+                ItemsSource="{Binding ListItems, Mode=TwoWay}"
+                SelectedIndex="{Binding Index, Mode=TwoWay}">
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -469,23 +475,23 @@
                         Header="Fen" />
                     <DataGridTextColumn
                         Width="100"
-                        Binding="{Binding Strategy}"
+                        Binding="{Binding Strategy, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
                         Header="Стратегия" />
                     <DataGridTextColumn
                         Width="100"
-                        Binding="{Binding Tactics}"
+                        Binding="{Binding Tactics, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
                         Header="Тактика" />
                     <DataGridTextColumn
                         Width="100"
-                        Binding="{Binding Score}"
+                        Binding="{Binding Score, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
                         Header="Счет" />
                     <DataGridTextColumn
                         Width="100"
-                        Binding="{Binding Technique}"
+                        Binding="{Binding Technique, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
                         Header="Техника" />
                     <DataGridTextColumn
                         Width="100"
-                        Binding="{Binding Grade}"
+                        Binding="{Binding Grade, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
                         Header="Оценка" />
                 </DataGrid.Columns>
                 <DataGrid.Styles>
