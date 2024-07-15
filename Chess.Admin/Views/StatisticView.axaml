@@ -12,12 +12,17 @@
     <Design.DataContext>
         <vm:StatisticViewModel />
     </Design.DataContext>
+	<Panel>
+		<Image
+            Margin="0"
+            Source="avares://Chess.Admin/Assets/fon1.png"
+            Stretch="Fill"
+            StretchDirection="Both" />
 
-
-    <Grid
-        Margin="20,10"
-        ColumnDefinitions="* * * *"
-        RowDefinitions="50 30 30 * 60">
+    <Grid ShowGridLines="False"
+        Margin="40,10"
+        ColumnDefinitions="200 200 200 240"
+        RowDefinitions="50 30 30 580 60">
         <TextBlock
             Grid.Row="0"
             Grid.ColumnSpan="4"
@@ -27,7 +32,7 @@
             Grid.Row="1"
             Grid.RowSpan="2"
             Grid.Column="0"
-            Margin="-5,10,10,0"
+            Margin="0,10,10,0"
             BorderBrush="Gray"
             BorderThickness="1"
             CornerRadius="10" />
@@ -115,27 +120,44 @@
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="4"
-            Height="380"
+            Height="550"
+			Width="840"
             Margin="0,15,0,0"
             AutoGenerateColumns="False"
             BorderBrush="Gray"
             BorderThickness="1"
             CanUserResizeColumns="True"
             CanUserSortColumns="True"
-            GridLinesVisibility="All"
+            GridLinesVisibility="None"
             IsReadOnly="True"
             ItemsSource="{Binding People}">
 
+			<DataGrid.Styles>
+
+				<Style Selector="DataGridCell">
+					<Setter Property="BorderBrush" Value="Gray" />
+					<Setter Property="BorderThickness" Value="1" />
+					<Setter Property="FontSize" Value="10" />
+					<Setter Property="Background" Value="#fcfad8"/>
+				</Style>
+				<Style Selector="DataGridColumnHeader">
+					<Setter Property="BorderBrush" Value="Gray" />
+					<Setter Property="BorderThickness" Value="1" />
+					<Setter Property="FontSize" Value="10" />
+					<Setter Property="Foreground" Value="Black"/>
+				</Style>
+
+			</DataGrid.Styles>
             <DataGrid.Columns>
 
                 <DataGridTextColumn
-                    Width="30"
+                    Width="60"
                     Binding="{Binding Id}"
                     FontSize="10"
                     Header="ID" />
 
                 <DataGridTextColumn
-                    Width="2.5*"
+                    Width="150"
                     Binding="{Binding LastName}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -143,7 +165,7 @@
                     Header="Фамилия" />
 
                 <DataGridTextColumn
-                    Width="2.5*"
+                    Width="150"
                     Binding="{Binding FirstName}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -151,7 +173,7 @@
                     Header="Имя" />
 
                 <DataGridTextColumn
-                    Width="*"
+                    Width="80"
                     Binding="{Binding TotalExercises}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -159,7 +181,7 @@
                     Header="Всего" />
 
                 <DataGridTextColumn
-                    Width="*"
+                    Width="80"
                     Binding="{Binding, Converter={x:Static, conv:FuncValueConverters.GetSuccessPercent}}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -167,7 +189,7 @@
                     Header="% У" />
 
                 <DataGridTextColumn
-                    Width="*"
+                    Width="80"
                     Binding="{Binding CaptureError}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -175,7 +197,7 @@
                     Header="ОВ" />
 
                 <DataGridTextColumn
-                    Width="*"
+                    Width="80"
                     Binding="{Binding, Converter={x:Static, conv:FuncValueConverters.GetCaptureErrorPercent}}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -183,7 +205,7 @@
                     Header="% ОВ" />
 
                 <DataGridTextColumn
-                    Width="*"
+                    Width="80"
                     Binding="{Binding WeaknessError}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -191,7 +213,7 @@
                     Header="ОC" />
 
                 <DataGridTextColumn
-                    Width="*"
+                    Width="80"
                     Binding="{Binding, Converter={x:Static, conv:FuncValueConverters.GetWeaknessErrorPercent}}"
                     FontSize="12"
                     FontWeight="DemiBold"
@@ -223,5 +245,5 @@
 		</StackPanel>
 
     </Grid>
-
+</Panel>
 </UserControl>

@@ -13,4 +13,5 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <views:MainView />
+	
 </Window>

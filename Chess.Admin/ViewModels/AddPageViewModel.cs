@@ -64,6 +64,7 @@ namespace Chess.Admin.ViewModels
                 if (_index != -1)
                 {
                     Load();
+
                     FillingEditFields(ListItems[_index]);
                 }
             }
@@ -394,10 +395,6 @@ namespace Chess.Admin.ViewModels
                 {
                     SearchMessage = "Успешно! FEN доступен для редактирования";
 
-                    IsFound = true;
-
-                    FillingEditFields(ListItems[i]);
-
                     Index = i;
 
                     return;
@@ -474,8 +471,6 @@ namespace Chess.Admin.ViewModels
                 }
                 else
                 {
-                    //IsFound = true;
-
                     fen.Strategy = StrategyEdit;
 
                     fen.Tactics = TacticsEdit;
@@ -520,6 +515,8 @@ namespace Chess.Admin.ViewModels
                 if (_board != null)
                 {
                     Cells = new ObservableCollection<Cell>(_board.BoardToList());
+
+                    IsFound = true;
                 }
                 else
                 {

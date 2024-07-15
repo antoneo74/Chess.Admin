@@ -34,6 +34,7 @@
         <Setter Property="Width" Value="150" />
         <Setter Property="Margin" Value="0,2" />
         <Setter Property="FontSize" Value="12" />
+		<Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="DemiBold" />
     </Style>
 
@@ -113,44 +114,13 @@
         <Setter Property="Width" Value="35" />
     </Style>
 
-
-    <!--  DATAGRID  
-
-    <Style Selector="DataGridColumnHeader">
-        <Setter Property="FontSize" Value="10" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Padding" Value="0" />
-		<Setter Property="Background"    Value="Gray"/>
-        <Setter Property="Foreground" Value="Black" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Grid
-                    Name="PART_ColumnHeaderRoot"
-                    Background="{TemplateBinding Background}"
-                    ColumnDefinitions="* 1">
-                    <Grid
-                        Margin="{TemplateBinding Padding}"
-                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="0" />
-                        </Grid.ColumnDefinitions>
-                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
-                    </Grid>
-                </Grid>
-            </ControlTemplate>
-        </Setter>
-    </Style>-->
-
-
     <!--  BUTTON  -->
 
     <!--  Button style  -->
     <Style Selector="Button">
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+		
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentPresenter
@@ -171,18 +141,18 @@
 
     <!--  Style when button pointerover  -->
 
-    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ButtonContentPresenter">
+    <Style Selector="Button.click:pointerover /template/ ContentPresenter#PART_ButtonContentPresenter">
         <Setter Property="Background" Value="#112D4E" />
         <Setter Property="Opacity" Value=".7" />
         <Setter Property="TextBlock.Foreground" Value="White" />
     </Style>
 
-    <!--  Style when button disabled  -->
-
-    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ButtonContentPresenter">
-        <Setter Property="Opacity" Value=".5" />        
-    </Style>
-
+	<!--  Style when button disabled -->
+	<Style Selector="Button.click:disabled /template/ ContentPresenter#PART_ButtonContentPresenter">
+		<Setter Property="Opacity" Value=".7" />
+		<Setter Property="Background" Value="#3F72AF" />
+		<Setter Property="TextBlock.Foreground" Value="White" />
+	</Style>
 
     <!--  Style for board cells  -->
 
@@ -201,8 +171,8 @@
         <Setter Property="Margin" Value="0 10" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="DemiBold" />
-        <Setter Property="Foreground" Value="Black" />
-        <Setter Property="Background" Value="#dedede" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="#3F72AF" />
         <Setter Property="BorderBrush" Value="Black" />
     </Style>
 

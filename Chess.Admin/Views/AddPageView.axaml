@@ -13,7 +13,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Hidden">
 
         <Grid
-            Margin="20"
+            Margin="40 20"
             ColumnDefinitions="320 70 30 70 70 70 70 70 50 450 20"
             RowDefinitions="20 20 30 40 10 40 20 30 40 500 30"
             ShowGridLines="False">
@@ -525,50 +525,8 @@
                         <Setter Property="BorderThickness" Value="1" />
                         <Setter Property="FontSize" Value="10" />
                     </Style>
-                    <!--
-                <Style Selector="DataGridCell">
-                    <Setter Property="BorderBrush" Value="Gray" />
-                    <Setter Property="BorderThickness" Value="1" />
-                    <Setter Property="FontSize" Value="10" />
-                    <Setter Property="Margin" Value="0" />
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="Background" Value="{DynamicResource DataGridCellBackgroundBrush}" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="MinHeight" Value="32" />
-                    <Setter Property="Template">
-                        <ControlTemplate>
-                            <Border
-                                x:Name="CellBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding CornerRadius}">
-                                <Grid x:Name="PART_CellRoot" ColumnDefinitions="*,Auto">
-
-
-
-                                    <ContentPresenter
-                                        Grid.Column="0"
-                                        Margin="0"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        Content="{TemplateBinding Content}"
-                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                        Foreground="{TemplateBinding Foreground}" />
-
-
-                                </Grid>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter>
-                </Style>
-
-				<Style Selector="DataGridRowsPresenter">
-					<Setter Property="Margin" Value="0"/>
-				</Style>-->
+					
                 </DataGrid.Styles>
-
             </DataGrid>
         </Grid>
     </ScrollViewer>
