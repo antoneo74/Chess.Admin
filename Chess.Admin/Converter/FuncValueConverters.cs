@@ -5,6 +5,7 @@ using Avalonia.Platform;
 using Chess.Admin.Models;
 using ChessDB.Model;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Chess.Admin.Converter
 {
@@ -69,6 +70,13 @@ namespace Chess.Admin.Converter
             {
                 string value = (++s).ToString();
                 return value;
+            });
+
+        public static FuncValueConverter<ObservableCollection<Fen>, string> GetCount { get; } =
+            new FuncValueConverter<ObservableCollection<Fen>, string>(s =>
+            {
+                if (s != null) return $"Общее количество FEN в базе {s.Count}";
+                return string.Empty;
             });
 
         public static FuncValueConverter<Cell, Bitmap?> GetBitmap { get; } =

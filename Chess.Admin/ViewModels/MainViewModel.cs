@@ -37,7 +37,7 @@ public class MainViewModel : ViewModelBase
 
         Pages = new List<ViewModelBase>()
         {
-            new AddPageViewModel(),
+            new AddPageViewModel(_parser),
             new CreatePageViewModel(),
             new CheckViewModel(_parser, _analysis),
             new StatisticViewModel()

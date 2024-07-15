@@ -1,6 +1,6 @@
-using Avalonia.Media;
 using Chess.Admin.Extensions;
 using Chess.Admin.Models;
+using Chess.Admin.Services;
 using ChessDB;
 using ChessDB.Model;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace Chess.Admin.ViewModels
         public static IEnumerable<char> Letters => "ABCDEFGH";
 
         #region Private members
-        private ObservableCollection<Fen> _listItems;
+        //add members
         private string _fen = string.Empty;
         private int _strategy;
         private int _tactics;
@@ -28,6 +28,7 @@ namespace Chess.Admin.ViewModels
         private int _technique;
         private int _grade;
         private string _addMessage = string.Empty;
+        //edit members
         private string _fenEdit = string.Empty;
         private int _strategyEdit;
         private int _tacticsEdit;
@@ -35,16 +36,38 @@ namespace Chess.Admin.ViewModels
         private int _techniqueEdit;
         private int _gradeEdit;
         private string _editMessage = string.Empty;
-        private string _searchMessage = string.Empty;
-
+        //search members
+        private string _searchMessage = string.Empty;        
         private string _searchingFen = string.Empty;
         private bool _isFound;
+        //other members
         private Board? _board;
+        private ObservableCollection<Fen> _listItems;
         private ObservableCollection<Cell> _cells;
-
+        private int _index;
+        private readonly IParser _parser;
+        private string _message = string.Empty;
         #endregion
 
         #region Public members
+
+        #region Board and other public members
+
+        public int Index
+        {
+            get => _index;
+
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _index, value);
+
+                if (_index != -1)
+                {
+                    Load();
+                    FillingEditFields(ListItems[_index]);
+                }
+            }
+        }
         public ObservableCollection<Fen> ListItems
         {
             get => _listItems;
@@ -66,13 +89,14 @@ namespace Chess.Admin.ViewModels
             set => this.RaiseAndSetIfChanged(ref _cells, value);
         }
 
-        public bool IsFound
+        public string Message
         {
-            get => _isFound;
+            get { return _message; }
 
-            set => this.RaiseAndSetIfChanged(ref _isFound, value);
+            set { this.RaiseAndSetIfChanged(ref _message, value); }
         }
 
+        #endregion
 
         #region Add fen block public members
         public string Fen
@@ -123,29 +147,14 @@ namespace Chess.Admin.ViewModels
 
             set { this.RaiseAndSetIfChanged(ref _addMessage, value); }
         }
-
         #endregion
 
-
-        public string SearchMessage
-        {
-            get { return _searchMessage; }
-
-            set { this.RaiseAndSetIfChanged(ref _searchMessage, value); }
-        }
-
+        #region Edit block public memebers
         public string FenEdit
         {
             get { return _fenEdit; }
 
             set { this.RaiseAndSetIfChanged(ref _fenEdit, value); }
-        }
-
-        public string SearchingFen
-        {
-            get { return _searchingFen; }
-
-            set { this.RaiseAndSetIfChanged(ref _searchingFen, value); }
         }
 
         public int StrategyEdit
@@ -191,6 +200,31 @@ namespace Chess.Admin.ViewModels
         }
         #endregion
 
+        #region Search block public members
+        public string SearchMessage
+        {
+            get { return _searchMessage; }
+
+            set { this.RaiseAndSetIfChanged(ref _searchMessage, value); }
+        }
+
+        public string SearchingFen
+        {
+            get { return _searchingFen; }
+
+            set { this.RaiseAndSetIfChanged(ref _searchingFen, value); }
+        }
+
+        public bool IsFound
+        {
+            get => _isFound;
+
+            set => this.RaiseAndSetIfChanged(ref _isFound, value);
+        }
+        #endregion
+
+        #endregion
+
         #region Reactive commands
         public ReactiveCommand<Unit, Unit> Add { get; }
 
@@ -198,7 +232,7 @@ namespace Chess.Admin.ViewModels
 
         public ReactiveCommand<Unit, Unit> Find { get; }
 
-        public ReactiveCommand<Unit, Unit> ClearEdit { get; }
+        public ReactiveCommand<Unit, Unit> ClearSearch { get; }
 
         public ReactiveCommand<Unit, Unit> SaveChanges { get; }
 
@@ -206,13 +240,17 @@ namespace Chess.Admin.ViewModels
         #endregion
 
         #region Constructor
-        public AddPageViewModel()
+        public AddPageViewModel(IParser parser)
         {
+            _parser = parser;
+
             _board = new Board();
 
             _cells = new ObservableCollection<Cell>(_board.BoardToList());
 
             _listItems = [];
+
+            _index = -1;
 
             GetAllFens();
 
@@ -222,7 +260,7 @@ namespace Chess.Admin.ViewModels
 
             Find = ReactiveCommand.Create(FindFen, this.WhenAnyValue(x => x.SearchingFen, (fen) => !string.IsNullOrEmpty(fen)));
 
-            ClearEdit = ReactiveCommand.Create(ClearEditFields);
+            ClearSearch = ReactiveCommand.Create(ClearSearchFields);
 
             SaveChanges = ReactiveCommand.Create(UpdateAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
 
@@ -239,21 +277,37 @@ namespace Chess.Admin.ViewModels
         /// </summary>        
         private void ClearAddFields()
         {
-            Fen = AddMessage = string.Empty;
+            Fen = string.Empty;
+
+            ClearAllMessage();
 
             Strategy = Tactics = Score = Technique = Grade = 0;
         }
 
         /// <summary>
+        /// Clear all message fields
+        /// </summary>
+        private void ClearAllMessage()
+        {
+            AddMessage = string.Empty;
+
+            EditMessage = string.Empty;
+
+            SearchMessage = string.Empty;
+
+            Message = string.Empty;
+        }
+
+        /// <summary>
         /// all fields Edit Block are filling by default
         /// </summary>   
-        private void ClearEditFields()
+        private void ClearSearchFields()
         {
-            FenEdit = EditMessage = string.Empty;
+            SearchingFen = string.Empty;
 
-            IsFound = false;
+            ClearAllMessage();
 
-            StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;
+            IsFound = false;            
         }
 
         /// <summary>
@@ -261,6 +315,8 @@ namespace Chess.Admin.ViewModels
         /// </summary>
         private async void AddFenAsync()
         {
+            ClearAllMessage();
+
             Fen = Fen.Normalization();
 
             if (!Fen.IsCorrect())
@@ -285,6 +341,7 @@ namespace Chess.Admin.ViewModels
                     await context.SaveChangesAsync();
                 }
                 AddMessage = "Fen успешно добавлен в базу";
+
                 GetAllFens();
             }
             catch (Exception)
@@ -293,21 +350,24 @@ namespace Chess.Admin.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Get all fens from DB
+        /// </summary>
         private void GetAllFens()
         {
             try
             {
-                using (ChessDbContext context = new())
-                {
-                    var fens = context.Fens.ToList();
-                    ListItems = new ObservableCollection<Fen>(fens);
-                }
+                using ChessDbContext context = new();
+
+                var fens = context.Fens.ToList();
+
+                ListItems = new ObservableCollection<Fen>(fens);
             }
             catch (Exception)
             {
+                ClearAllMessage();
 
-                throw;
+                Message = "„то-то пошло не так";                
             }
         }
 
@@ -318,37 +378,47 @@ namespace Chess.Admin.ViewModels
         {
             SearchingFen = SearchingFen.Normalization();
 
+            ClearAllMessage();
+
             if (!SearchingFen.IsCorrect())
             {
+
                 SearchMessage = "FEN имеет некорректный формат";
+
                 return;
             }
 
-            foreach (var item in ListItems)
+            for (var i = 0; i< ListItems.Count; ++i)
             {
-                if(item.Description == SearchingFen)
+                if(ListItems[i].Description == SearchingFen)
                 {
                     SearchMessage = "”спешно! FEN доступен дл€ редактировани€";
 
                     IsFound = true;
 
-                    FenEdit = SearchingFen;
+                    FillingEditFields(ListItems[i]);
 
-                    StrategyEdit = item.Strategy;
-
-                    TacticsEdit = item.Tactics;
-
-                    ScoreEdit = item.Score;
-
-                    TechniqueEdit = item.Technique;
-
-                    GradeEdit = item.Grade;
+                    Index = i;
 
                     return;
                 }
             }
-            SearchMessage = "FEN отсутствует в базе";
-            
+            SearchMessage = "FEN отсутствует в базе";            
+        }
+
+        private void FillingEditFields(Fen fen)
+        {
+            FenEdit = fen.Description;
+
+            StrategyEdit = fen.Strategy;
+
+            TacticsEdit = fen.Tactics;
+
+            ScoreEdit = fen.Score;
+
+            TechniqueEdit = fen.Technique;
+
+            GradeEdit = fen.Grade;
         }
 
         /// <summary>
@@ -356,26 +426,71 @@ namespace Chess.Admin.ViewModels
         /// </summary>
         private async void DeleteAsync()
         {
+            ClearAllMessage() ;
             try
             {
-                using (ChessDbContext context = new())
+                using ChessDbContext context = new();
+
+                var fen = await context.Fens.Where(x => x.Description == FenEdit).FirstOrDefaultAsync();
+
+                if (fen == null)
                 {
-                    var fen = await context.Fens.Where(x => x.Description == FenEdit).FirstOrDefaultAsync();
+                    EditMessage = "FEN отсутствует в базе";
+                }
+                else
+                {
+                    context.Remove(fen);
 
-                    if (fen == null)
-                    {
-                        EditMessage = "FEN отсутствует в базе";
-                    }
-                    else
-                    {
-                        context.Remove(fen);
+                    await context.SaveChangesAsync();
 
-                        await context.SaveChangesAsync();
+                    IsFound = false;
 
-                        IsFound = false;
+                    EditMessage = "FEN успешно удален";
 
-                        EditMessage = "FEN успешно удален";
-                    }
+                    GetAllFens();
+                }
+            }
+            catch (Exception)
+            {
+                EditMessage = "„то-то пошло не так";
+            }
+        }
+
+        /// <summary>
+        /// Uptade params of found fen
+        /// </summary>
+        private async void UpdateAsync()
+        {
+            ClearAllMessage();
+            try
+            {
+                using ChessDbContext context = new();
+
+                var fen = await context.Fens.Where(x => x.Description == FenEdit).FirstOrDefaultAsync();
+
+                if (fen == null)
+                {
+                    EditMessage = "FEN отсутствует в базе";
+                }
+                else
+                {
+                    //IsFound = true;
+
+                    fen.Strategy = StrategyEdit;
+
+                    fen.Tactics = TacticsEdit;
+
+                    fen.Score = ScoreEdit;
+
+                    fen.Technique = TechniqueEdit;
+
+                    fen.Grade = GradeEdit;
+
+                    await context.SaveChangesAsync();
+
+                    EditMessage = "ѕараметры FEN успешно изменены";
+
+                    GetAllFens();
                 }
             }
             catch (Exception)
@@ -386,45 +501,34 @@ namespace Chess.Admin.ViewModels
 
 
         /// <summary>
-        /// Uptade params of found fen
+        /// Load new board from fen
         /// </summary>
-        private async void UpdateAsync()
+        private void Load()
         {
+            ClearAllMessage();
             try
             {
-                using (ChessDbContext context = new())
+                if (Index != -1 && ListItems.Count != 0)
                 {
-                    var fen = await context.Fens.Where(x => x.Description == FenEdit).FirstOrDefaultAsync();
+                    _board = _parser.Parse(ListItems[Index].Description);
+                }
+                else
+                {
+                    _board = new Board();
+                }
 
-                    if (fen == null)
-                    {
-                        EditMessage = "FEN отсутствует в базе";
-                    }
-                    else
-                    {
-                        IsFound = true;
-
-                        fen.Strategy = StrategyEdit;
-
-                        fen.Tactics = TacticsEdit;
-
-                        fen.Score = ScoreEdit;
-
-                        fen.Technique = TechniqueEdit;
-
-                        fen.Grade = GradeEdit;
-
-                        await context.SaveChangesAsync();
-
-                        EditMessage = "ѕараметры FEN успешно изменены";
-
-                        GetAllFens();
-                    }
+                if (_board != null)
+                {
+                    Cells = new ObservableCollection<Cell>(_board.BoardToList());
+                }
+                else
+                {
+                    SearchMessage = "Ќеправильный формат входной строки";
                 }
             }
             catch (Exception)
             {
-                EditMessage = "„то-то пошло не так";
+                SearchMessage = "„то-то пошло не так";
             }
         }
         #endregion

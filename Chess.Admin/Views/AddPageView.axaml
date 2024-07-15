@@ -6,12 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Chess.Admin.ViewModels;assembly=Chess.Admin"
-    d:DesignHeight="600"
+    d:DesignHeight="800"
     d:DesignWidth="1800"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <vm:AddPageViewModel />
-    </Design.DataContext>
+    <Design.DataContext />
     <ScrollViewer VerticalScrollBarVisibility="Hidden">
 
         <Grid
@@ -140,8 +138,8 @@
                 Grid.Row="3"
                 Grid.Column="3"
                 Grid.ColumnSpan="5"
+                HorizontalAlignment="Left"
                 Classes="Message"
-				HorizontalAlignment="Left"
                 Foreground="{Binding AddMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
                 Text="{Binding AddMessage}" />
 
@@ -151,6 +149,12 @@
                 Grid.ColumnSpan="8"
                 Classes="pageTitle"
                 Text="Редактировать параметры FEN" />
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Classes="Header"
+                Text="FEN" />
             <TextBlock
                 Grid.Row="6"
                 Grid.Column="3"
@@ -183,7 +187,7 @@
                 BorderBrush="Gray"
                 BorderThickness="1"
                 CornerRadius="5">
-                <TextBlock
+                <TextBlock 
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
                     Text="{Binding FenEdit}" />
@@ -270,8 +274,8 @@
                 Grid.Row="8"
                 Grid.Column="3"
                 Grid.ColumnSpan="5"
-				HorizontalAlignment="Left"
                 Margin="10"
+                HorizontalAlignment="Left"
                 Classes="Message"
                 Foreground="{Binding EditMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
                 Text="{Binding EditMessage}" />
@@ -303,7 +307,7 @@
                 <Button
                     Margin="10"
                     Classes="click"
-                    Command="{Binding ClearEdit}"
+                    Command="{Binding ClearSearch}"
                     Content="Очистить" />
             </StackPanel>
             <TextBlock
@@ -313,6 +317,21 @@
                 Classes="Message"
                 Foreground="{Binding SearchMessage, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
                 Text="{Binding SearchMessage}" />
+
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="9"
+                Margin="15,0"
+                HorizontalAlignment="Left"
+                Classes="pageTitle"
+                Text="{Binding ListItems, Converter={x:Static conv:FuncValueConverters.GetCount}}" />
+
+            <TextBlock
+                Grid.Row="8"
+                Grid.Column="9"
+                Classes="Message"
+                Foreground="{Binding Message, Converter={x:Static conv:FuncValueConverters.GetForeground}}"
+                Text="{Binding Message}" />
 
             <!--  BOARD  -->
             <Grid
@@ -462,7 +481,7 @@
                 GridLinesVisibility="None"
                 IsReadOnly="True"
                 ItemsSource="{Binding ListItems, Mode=TwoWay}"
-                SelectedIndex="{Binding Index, Mode=TwoWay}">
+                SelectedIndex="{Binding Index}">
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
