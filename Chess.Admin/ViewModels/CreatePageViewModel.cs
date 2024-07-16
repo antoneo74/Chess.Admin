@@ -46,7 +46,6 @@ namespace Chess.Admin.ViewModels
             set { this.RaiseAndSetIfChanged(ref _fenList, value); }
         }
 
-
         public int Count
         {
             get { return _count; }
@@ -121,33 +120,42 @@ namespace Chess.Admin.ViewModels
 
             CreateList = ReactiveCommand.Create(CreateExercisesList, this.WhenAnyValue(x => x.Count, count => count != 0));
 
-            CreateFile = ReactiveCommand.CreateFromTask(CreateExercisesFile, this.WhenAnyValue(x => x.FenList.Count, count => count != 0));
+            CreateFile = ReactiveCommand.Create(CreateExercisesFile, this.WhenAnyValue(x => x.FenList.Count, count => count != 0));
         }
-
         #endregion
 
         #region save file with exercise
+
         /// <summary>
-        /// Save report file
-        /// </summary>
-        /// <returns></returns>
-        private async Task CreateExercisesFile()
+        /// Save file with exercises
+        /// </summary>        
+        private async void CreateExercisesFile()
         {
             try
             {
-                var folder = await DoOpenFolderPickerAsync();
+                if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
+                                 desktop.MainWindow?.StorageProvider is not { } provider)
 
-                if (folder is null) return;
-
-                var folderPath = folder.ToList()[0].TryGetLocalPath() ?? throw new Exception("Выбрана некорректная папка");
+                    throw new NullReferenceException("Missing StorageProvider instance.");
 
                 var title = $"{CurrentDate.Day}_{CurrentDate.Month}_{CurrentDate.Year}.txt";
 
-                var path = System.IO.Path.Combine(folderPath, title);
+                var file = await provider.SaveFilePickerAsync(new FilePickerSaveOptions
+                {
+                    Title = "Cохранить задание",
+                    DefaultExtension = "txt",
+                    SuggestedFileName = title
+                });
+
+                if (file is null) return;
 
                 var text = CreateReportText();
 
-                await File.WriteAllTextAsync(path, text);
+                await using var stream = await file.OpenWriteAsync();
+
+                using StreamWriter writer = new(stream);
+
+                await writer.WriteAsync(text);
 
                 Message = "Задание успешно сформировано";
             }
@@ -156,25 +164,6 @@ namespace Chess.Admin.ViewModels
                 Message = "Что-то пошло не так";
             }
         }
-
-        /// <summary>
-        /// SaveFileDialog
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NullReferenceException"></exception>
-        private static async Task<IReadOnlyList<IStorageFolder>> DoOpenFolderPickerAsync()
-        {
-            if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop ||
-                 desktop.MainWindow?.StorageProvider is not { } provider)
-
-                throw new NullReferenceException("Missing StorageProvider instance.");
-
-            return await provider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
-            {
-                Title = "Выбери куда сохранить задание"
-            });
-        }
-
         #endregion
 
         #region helpers functions

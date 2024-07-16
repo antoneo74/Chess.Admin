@@ -82,19 +82,21 @@
 
 
     <!--  TEXTBOX  -->
-    <Style Selector="TextBox">
+    <Style Selector="TextBox.input">
         <Setter Property="BorderBrush" Value="Black" />
+		<Setter Property="Background" Value="White"/>
+		<Setter Property="Foreground" Value="Black"/>
     </Style>
 
-
+	
     <!--  LISTBOX  -->
 
     <Style Selector="ListBoxItem">
         <Setter Property="Height" Value="20" />
-        <Setter Property="Margin" Value="10, -10" />
+        <Setter Property="Margin" Value="10, -5" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="FontSize" Value="10" />
-        <Setter Property="Foreground" Value="Blue" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="Black" />
     </Style>
 
 

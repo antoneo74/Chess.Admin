@@ -10,7 +10,7 @@
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
     <Design.DataContext />
-	
+
     <Grid RowDefinitions="30 *">
         <StackPanel
             Grid.Row="0"
@@ -96,5 +96,5 @@
             <ContentControl Content="{Binding CurrentPage}" />
 
         </SplitView>
-    </Grid>		
+    </Grid>
 </UserControl>

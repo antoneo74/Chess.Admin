@@ -11,13 +11,7 @@
     mc:Ignorable="d">
     <Design.DataContext>
         <vm:StatisticViewModel />
-    </Design.DataContext>
-	<Panel>
-		<Image
-            Margin="0"
-            Source="avares://Chess.Admin/Assets/fon1.png"
-            Stretch="Fill"
-            StretchDirection="Both" />
+    </Design.DataContext>	
 
     <Grid ShowGridLines="False"
         Margin="40,10"
@@ -245,5 +239,4 @@
 		</StackPanel>
 
     </Grid>
-</Panel>
 </UserControl>

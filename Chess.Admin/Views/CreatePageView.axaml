@@ -12,12 +12,7 @@
     <Design.DataContext>
         <vm:CreatePageViewModel />
     </Design.DataContext>
-	<Panel>
-		<Image
-            Margin="0"
-            Source="avares://Chess.Admin/Assets/fon1.png"
-            Stretch="Fill"
-            StretchDirection="Both" />
+
     <Grid
         Margin="40,10"
         ColumnDefinitions="300 70 70 70 70 70"
@@ -200,5 +195,5 @@
             Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
             Text="{Binding Message}" />
     </Grid>
-		</Panel>
+
 </UserControl>
