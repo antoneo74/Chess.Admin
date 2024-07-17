@@ -322,7 +322,7 @@ namespace Chess.Admin.ViewModels
 
             if (!Fen.IsCorrect())
             {
-                AddMessage = "FEN имеет некорректный формат";
+                AddMessage = "FEN имеет некорректный формат ";
                 return;
             }
 
