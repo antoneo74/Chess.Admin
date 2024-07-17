@@ -5,13 +5,11 @@ using Chess.Admin.Extensions;
 using ChessDB;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
@@ -143,7 +141,9 @@ namespace Chess.Admin.ViewModels
                 var file = await provider.SaveFilePickerAsync(new FilePickerSaveOptions
                 {
                     Title = "Cохранить задание",
+
                     DefaultExtension = "txt",
+
                     SuggestedFileName = title
                 });
 

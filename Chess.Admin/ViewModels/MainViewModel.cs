@@ -1,5 +1,4 @@
-﻿using Chess.Admin.Parser;
-using Chess.Admin.Services;
+﻿using Chess.Admin.Services;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Reactive;
@@ -10,9 +9,11 @@ public class MainViewModel : ViewModelBase
 {
     private ViewModelBase _currentPage;
 
-    private IParser _parser = null!;
+    private readonly IParser _parser = null!;
 
-    private IAnalysis _analysis = null!;
+    private readonly IAnalysis _analysis = null!;
+
+    private bool _isOpen;
 
     public ViewModelBase CurrentPage
     {
@@ -21,7 +22,6 @@ public class MainViewModel : ViewModelBase
         set { this.RaiseAndSetIfChanged(ref _currentPage, value); }
     }
 
-    private bool _isOpen;
     public bool IsOpen
     {
         get { return _isOpen; }
@@ -54,9 +54,7 @@ public class MainViewModel : ViewModelBase
 
     private void GetContext(string index)
     {
-        int.TryParse(index, out int i);
-
-        CurrentPage = Pages[i];
+        if (int.TryParse(index, out int i)) CurrentPage = Pages[i];
     }
 
     private List<ViewModelBase> Pages;

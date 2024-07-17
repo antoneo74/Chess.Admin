@@ -170,10 +170,10 @@
             <ComboBox
                 Width="320"
                 Margin="15,20,0,0"
+                HorizontalAlignment="Left"
                 VerticalContentAlignment="Center"
                 Background="White"
                 Classes="Combo"
-				HorizontalAlignment="Left"
                 FontSize="12"
                 FontWeight="DemiBold"
                 IsEnabled="{Binding FileIsLoaded}"

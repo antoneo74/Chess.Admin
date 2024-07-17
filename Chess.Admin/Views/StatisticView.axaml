@@ -11,12 +11,13 @@
     mc:Ignorable="d">
     <Design.DataContext>
         <vm:StatisticViewModel />
-    </Design.DataContext>	
+    </Design.DataContext>
 
-    <Grid ShowGridLines="False"
+    <Grid
         Margin="40,10"
         ColumnDefinitions="200 200 200 240"
-        RowDefinitions="50 30 30 580 60">
+        RowDefinitions="50 30 30 580 60"
+        ShowGridLines="False">
         <TextBlock
             Grid.Row="0"
             Grid.ColumnSpan="4"
@@ -114,8 +115,8 @@
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="4"
+            Width="840"
             Height="550"
-			Width="840"
             Margin="0,15,0,0"
             AutoGenerateColumns="False"
             BorderBrush="Gray"
@@ -126,22 +127,22 @@
             IsReadOnly="True"
             ItemsSource="{Binding People}">
 
-			<DataGrid.Styles>
+            <DataGrid.Styles>
 
-				<Style Selector="DataGridCell">
-					<Setter Property="BorderBrush" Value="Gray" />
-					<Setter Property="BorderThickness" Value="1" />
-					<Setter Property="FontSize" Value="10" />
-					<Setter Property="Background" Value="#fcfad8"/>
-				</Style>
-				<Style Selector="DataGridColumnHeader">
-					<Setter Property="BorderBrush" Value="Gray" />
-					<Setter Property="BorderThickness" Value="1" />
-					<Setter Property="FontSize" Value="10" />
-					<Setter Property="Foreground" Value="Black"/>
-				</Style>
+                <Style Selector="DataGridCell">
+                    <Setter Property="BorderBrush" Value="Gray" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="Background" Value="#fcfad8" />
+                </Style>
+                <Style Selector="DataGridColumnHeader">
+                    <Setter Property="BorderBrush" Value="Gray" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
 
-			</DataGrid.Styles>
+            </DataGrid.Styles>
             <DataGrid.Columns>
 
                 <DataGridTextColumn
@@ -223,20 +224,20 @@
             Classes="Message"
             Foreground="{Binding Message, Converter={x:Static, conv:FuncValueConverters.GetForeground}}"
             Text="{Binding Message}" />
-		<StackPanel Grid.Row="4" Grid.Column="3">
-			<TextBlock
+        <StackPanel Grid.Row="4" Grid.Column="3">
+            <TextBlock
                 FontSize="10"
                 FontStyle="Italic"
                 Text="У - успешно решенные" />
-			<TextBlock
+            <TextBlock
                 FontSize="10"
                 FontStyle="Italic"
                 Text="ОВ - Ошибки на взятиях" />
-			<TextBlock
+            <TextBlock
                 FontSize="10"
                 FontStyle="Italic"
                 Text="ОС - Ошибки на слабостях" />
-		</StackPanel>
+        </StackPanel>
 
     </Grid>
 </UserControl>

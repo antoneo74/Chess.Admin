@@ -34,7 +34,7 @@ namespace Chess.Admin.Models
                 }
             }
         }
-        
+
         public List<Cell> BoardToList()
         {
             List<Cell> list = [];
@@ -46,6 +46,6 @@ namespace Chess.Admin.Models
                 }
             }
             return list;
-        }        
+        }
     }
 }

@@ -34,7 +34,7 @@
         <Setter Property="Width" Value="150" />
         <Setter Property="Margin" Value="0,2" />
         <Setter Property="FontSize" Value="12" />
-		<Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontWeight" Value="DemiBold" />
     </Style>
 
@@ -71,24 +71,24 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
 
-	<!--  Style for page small title  -->
+    <!--  Style for page small title  -->
 
-	<Style Selector="TextBlock.pageTitleSmall">
-		<Setter Property="FontSize" Value="12" />
-		<Setter Property="FontWeight" Value="Bold" />
-		<Setter Property="VerticalAlignment" Value="Center" />
-		<Setter Property="HorizontalAlignment" Value="Center" />
-	</Style>
+    <Style Selector="TextBlock.pageTitleSmall">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 
 
     <!--  TEXTBOX  -->
     <Style Selector="TextBox.input">
         <Setter Property="BorderBrush" Value="Black" />
-		<Setter Property="Background" Value="White"/>
-		<Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Foreground" Value="Black" />
     </Style>
 
-	
+
     <!--  LISTBOX  -->
 
     <Style Selector="ListBoxItem">
@@ -122,7 +122,7 @@
     <Style Selector="Button">
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
-		
+
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentPresenter
@@ -149,12 +149,12 @@
         <Setter Property="TextBlock.Foreground" Value="White" />
     </Style>
 
-	<!--  Style when button disabled -->
-	<Style Selector="Button.click:disabled /template/ ContentPresenter#PART_ButtonContentPresenter">
-		<Setter Property="Opacity" Value=".7" />
-		<Setter Property="Background" Value="#3F72AF" />
-		<Setter Property="TextBlock.Foreground" Value="White" />
-	</Style>
+    <!--  Style when button disabled  -->
+    <Style Selector="Button.click:disabled /template/ ContentPresenter#PART_ButtonContentPresenter">
+        <Setter Property="Opacity" Value=".7" />
+        <Setter Property="Background" Value="#3F72AF" />
+        <Setter Property="TextBlock.Foreground" Value="White" />
+    </Style>
 
     <!--  Style for board cells  -->
 

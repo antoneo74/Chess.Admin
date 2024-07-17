@@ -13,14 +13,14 @@ namespace Chess.Admin.Models
             set => this.RaiseAndSetIfChanged(ref _figure, value);
         }
 
-        public IBrush BackgroundColor { get; set; } = new SolidColorBrush(Colors.Gray);        
-        
+        public IBrush BackgroundColor { get; set; } = new SolidColorBrush(Colors.Gray);
+
         public FigureColor Color { get; set; }
 
         public int ProtectionsCount { get; set; }
 
         public int EnemyAttacksCount { get; set; }
 
-        public int Capture {  get; set; }
+        public int Capture { get; set; }
     }
 }

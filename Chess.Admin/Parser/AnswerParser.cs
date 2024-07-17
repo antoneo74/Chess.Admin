@@ -5,7 +5,7 @@ namespace Chess.Admin.Parser
 {
     public static class AnswerParser
     {
-        public static void Parse(string s, ref User user, ref ObservableCollection<Exercise> ListItems)
+        public static void Parse(string s, ref User? user, ref ObservableCollection<Exercise> ListItems)
         {
             var array = s.Split('\n');
 

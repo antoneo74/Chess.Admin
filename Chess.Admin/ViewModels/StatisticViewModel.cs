@@ -1,4 +1,3 @@
-using Chess.Admin.Models;
 using ChessDB;
 using ChessDB.Model;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +7,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
     public class StatisticViewModel : ViewModelBase
     {
+        #region Private members
         private ObservableCollection<Person> _people;
 
         private bool _common;
@@ -25,7 +24,9 @@ namespace Chess.Admin.ViewModels
         private string _message = string.Empty;
 
         private bool _isFound = false;
+        #endregion
 
+        #region Public members
         public bool IsFound
         {
             get => _isFound;
@@ -65,7 +66,9 @@ namespace Chess.Admin.ViewModels
 
             set { this.RaiseAndSetIfChanged(ref _people, value); }
         }
+        #endregion
 
+        #region Constructor
         public StatisticViewModel()
         {
             _people = new ObservableCollection<Person>();
@@ -93,33 +96,34 @@ namespace Chess.Admin.ViewModels
                 x => x.IsFound,
                 (name, surname, isFound) => !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(surname) && isFound == true));
         }
+        #endregion
 
+        #region Helper functions
         private async void ClearStatistic()
         {
             try
             {
-                using (ChessDbContext context = new())
+                using ChessDbContext context = new();
+
+                var name = Name[..1].ToUpper() + Name.Substring(1).ToLower();
+
+                var surname = Surname[..1].ToUpper() + Surname.Substring(1).ToLower();
+
+                var person = await context.Persons.Where(x => x.FirstName == name && x.LastName == surname).FirstOrDefaultAsync();
+
+                if (person != null)
                 {
-                    var name = Name[..1].ToUpper() + Name.Substring(1).ToLower();
+                    person.TotalExercises = 0;
 
-                    var surname = Surname[..1].ToUpper() + Surname.Substring(1).ToLower();
+                    person.WeaknessError = 0;
 
-                    var person = await context.Persons.Where(x => x.FirstName == name && x.LastName == surname).FirstOrDefaultAsync();
+                    person.CaptureError = 0;
 
-                    if (person != null)
-                    {
-                        person.TotalExercises = 0;
+                    IsFound = false;
 
-                        person.WeaknessError = 0;
+                    await context.SaveChangesAsync();
 
-                        person.CaptureError = 0;
-
-                        IsFound = false;
-
-                        await context.SaveChangesAsync();
-
-                        Message = "Успешно! Нажми кнопку обновить";
-                    }
+                    Message = "Успешно! Нажми кнопку обновить";
                 }
             }
             catch (Exception)
@@ -132,24 +136,23 @@ namespace Chess.Admin.ViewModels
         {
             try
             {
-                using (ChessDbContext context = new())
+                using ChessDbContext context = new();
+
+                var name = Name[..1].ToUpper() + Name.Substring(1).ToLower();
+
+                var surname = Surname[..1].ToUpper() + Surname.Substring(1).ToLower();
+
+                var person = await context.Persons.Where(x => x.LastName == surname && x.FirstName == name).FirstOrDefaultAsync();
+
+                if (person != null)
                 {
-                    var name = Name[..1].ToUpper() + Name.Substring(1).ToLower();
+                    People = new ObservableCollection<Person>(new List<Person> { person });
 
-                    var surname = Surname[..1].ToUpper() + Surname.Substring(1).ToLower();
-
-                    var person = await context.Persons.Where(x => x.LastName == surname && x.FirstName == name).FirstOrDefaultAsync();
-
-                    if (person != null)
-                    {
-                        People = new ObservableCollection<Person>(new List<Person> { person });
-
-                        IsFound = true;
-                    }
-                    else
-                    {
-                        Message = "Данный человек отсутствует в базе";
-                    }
+                    IsFound = true;
+                }
+                else
+                {
+                    Message = "Данный человек отсутствует в базе";
                 }
             }
             catch (Exception)
@@ -180,19 +183,20 @@ namespace Chess.Admin.ViewModels
         {
             try
             {
-                using (ChessDbContext context = new())
-                {
-                    People = new ObservableCollection<Person>([.. context.Persons]);
+                using ChessDbContext context = new();
 
-                    Message = People.Count == 0 ? "Список пуст" : "Успешно";                    
-                }
+                People = new ObservableCollection<Person>([.. context.Persons]);
+
+                Message = People.Count == 0 ? "Список пуст" : "Успешно";
             }
             catch (Exception)
             {
                 Message = "Что-то пошло не так";
             }
         }
+        #endregion
 
+        #region Reactive commands
         public ReactiveCommand<Unit, Unit> ShowAll { get; }
 
         public ReactiveCommand<Unit, Unit> ClearCommand { get; }
@@ -202,5 +206,6 @@ namespace Chess.Admin.ViewModels
         public ReactiveCommand<Unit, Unit> SearchPersonCommand { get; }
 
         public ReactiveCommand<Unit, Unit> ClearStatisticCommand { get; }
+        #endregion
     }
 }

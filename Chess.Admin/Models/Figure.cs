@@ -8,6 +8,6 @@
         Rook,
         Knight,
         Bishop,
-        Pawn,        
+        Pawn,
     }
 }

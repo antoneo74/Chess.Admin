@@ -205,15 +205,7 @@ namespace Chess.Admin.ViewModels
 
             if (files.Count == 0) return null;
 
-            string pattern = @"^[a-zA-Zà-ÿÀ-ß]+_[a-zA-Zà-ÿÀ-ß]+_[1-9][0-9]?_[1-9][0-9]?_20[0-9]{2}.txt$";
-
-            Regex regex = new(pattern);
-
-            var name = files[0].Name;
-
-            if (regex.IsMatch(name)) return files[0];
-
-            return null;
+            return files[0];
         }
         #endregion
 

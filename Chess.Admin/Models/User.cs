@@ -1,4 +1,4 @@
 ﻿namespace Chess.Admin.Models
 {
-    public record User(string LastName,  string FirstName);   
+    public record User(string LastName, string FirstName);
 }

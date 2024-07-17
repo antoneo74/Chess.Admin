@@ -37,7 +37,7 @@ namespace Chess.Admin.ViewModels
         private int _gradeEdit;
         private string _editMessage = string.Empty;
         //search members
-        private string _searchMessage = string.Empty;        
+        private string _searchMessage = string.Empty;
         private string _searchingFen = string.Empty;
         private bool _isFound;
         //other members
@@ -308,7 +308,7 @@ namespace Chess.Admin.ViewModels
 
             ClearAllMessage();
 
-            IsFound = false;            
+            IsFound = false;
         }
 
         /// <summary>
@@ -368,12 +368,12 @@ namespace Chess.Admin.ViewModels
             {
                 ClearAllMessage();
 
-                Message = "„то-то пошло не так";                
+                Message = "„то-то пошло не так";
             }
         }
 
         /// <summary>
-        /// Find fen by name
+        /// Find fen by name 
         /// </summary>
         private void FindFen()
         {
@@ -389,9 +389,9 @@ namespace Chess.Admin.ViewModels
                 return;
             }
 
-            for (var i = 0; i< ListItems.Count; ++i)
+            for (var i = 0; i < ListItems.Count; ++i)
             {
-                if(ListItems[i].Description == SearchingFen)
+                if (ListItems[i].Description == SearchingFen)
                 {
                     SearchMessage = "”спешно! FEN доступен дл€ редактировани€";
 
@@ -400,7 +400,7 @@ namespace Chess.Admin.ViewModels
                     return;
                 }
             }
-            SearchMessage = "FEN отсутствует в базе";            
+            SearchMessage = "FEN отсутствует в базе";
         }
 
         private void FillingEditFields(Fen fen)
@@ -423,7 +423,7 @@ namespace Chess.Admin.ViewModels
         /// </summary>
         private async void DeleteAsync()
         {
-            ClearAllMessage() ;
+            ClearAllMessage();
             try
             {
                 using ChessDbContext context = new();
