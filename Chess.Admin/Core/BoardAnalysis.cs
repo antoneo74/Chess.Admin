@@ -1,6 +1,5 @@
 ﻿using Chess.Admin.Models;
 using Chess.Admin.Services;
-
 namespace Chess.Core
 {
     public class BoardAnalysis() : IAnalysis
@@ -103,6 +102,10 @@ namespace Chess.Core
             // Cells that the bishop can attack or defend (while correct indexies)
             // [--row, --column] [--row, ++column] [++row, --column] [++row, ++column]
 
+            // We go diagonally until we meet a figure and analyze the attacks/defenses.
+            // If the piece is the same color and can also attack or defend diagonally, move on.
+            // All others cases break
+
             var color = _board[row, column].Color;
 
             var rowIterator = row;
@@ -114,25 +117,25 @@ namespace Chess.Core
             //go to top and left
             while (CellCorrect(--rowIterator, --columnIterator))
             {
-                if (CellIsNotEmpty(rowIterator, columnIterator))
+                // cell is empty - move on
+                if (!CellIsNotEmpty(rowIterator, columnIterator)) continue;
+
+                // else we analyze attacks/defends
+                AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+
+                // if there was an attack or defense of a piece that is not diagonal, we stop the movement since rentgen is impossible
+                if (ColorIsDifferent(color, rowIterator, columnIterator) || FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
+
+                // rentgen continues but capturing the enemy piece with the bishop is no longer possible
+                isCanCapture = false;
+
+                // we check the situation when there is a pawn on the diagonal
+                if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
                 {
-                    AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+                    // A pawn can attack or defend in this direction only if it is white
+                    if (color == FigureColor.White) PawnIsDiagonalCheckingNextCell(rowIterator - 1, columnIterator - 1, color);
 
-                    if (ColorIsDifferent(color, rowIterator, columnIterator)) { break; }
-
-                    else
-                    {
-                        if (FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
-
-                        isCanCapture = false;
-
-                        if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
-                        {
-                            PawnIsDiagonalCheckingNextCell(rowIterator - 1, columnIterator - 1, color);
-
-                            break;
-                        }
-                    }
+                    break;
                 }
             }
 
@@ -145,25 +148,20 @@ namespace Chess.Core
             //go to top and right
             while (CellCorrect(--rowIterator, ++columnIterator))
             {
-                if (CellIsNotEmpty(rowIterator, columnIterator))
+                if (!CellIsNotEmpty(rowIterator, columnIterator)) continue;
+
+                AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+
+                if (ColorIsDifferent(color, rowIterator, columnIterator) || FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
+
+                isCanCapture = false;
+
+                if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
                 {
-                    AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+                    // A pawn can attack or defend in this direction only if it is white
+                    if (color == FigureColor.White) PawnIsDiagonalCheckingNextCell(rowIterator - 1, columnIterator + 1, color);
 
-                    if (ColorIsDifferent(color, rowIterator, columnIterator)) { break; }
-
-                    else
-                    {
-                        if (FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
-
-                        isCanCapture = false;
-
-                        if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
-                        {
-                            PawnIsDiagonalCheckingNextCell(rowIterator - 1, columnIterator + 1, color);
-
-                            break;
-                        }
-                    }
+                    break;
                 }
             }
 
@@ -174,27 +172,23 @@ namespace Chess.Core
             isCanCapture = true;
 
             //go to down and left
+
             while (CellCorrect(++rowIterator, --columnIterator))
             {
-                if (CellIsNotEmpty(rowIterator, columnIterator))
+                if (!CellIsNotEmpty(rowIterator, columnIterator)) continue;
+
+                AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+
+                if (ColorIsDifferent(color, rowIterator, columnIterator) || FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
+
+                isCanCapture = false;
+
+                if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
                 {
-                    AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+                    // A pawn can attack or defend in this direction only if it is black
+                    if (color == FigureColor.Black) PawnIsDiagonalCheckingNextCell(rowIterator + 1, columnIterator - 1, color);
 
-                    if (ColorIsDifferent(color, rowIterator, columnIterator)) { break; }
-
-                    else
-                    {
-                        if (FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
-
-                        isCanCapture = false;
-
-                        if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
-                        {
-                            PawnIsDiagonalCheckingNextCell(rowIterator + 1, columnIterator - 1, color);
-
-                            break;
-                        }
-                    }
+                    break;
                 }
             }
 
@@ -207,25 +201,20 @@ namespace Chess.Core
             //go to down and right
             while (CellCorrect(++rowIterator, ++columnIterator))
             {
-                if (CellIsNotEmpty(rowIterator, columnIterator))
+                if (!CellIsNotEmpty(rowIterator, columnIterator)) continue;
+
+                AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+
+                if (ColorIsDifferent(color, rowIterator, columnIterator) || FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
+
+                isCanCapture = false;
+
+                if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
                 {
-                    AttacksDefends(rowIterator, columnIterator, color, isCanCapture);
+                    // A pawn can attack or defend in this direction only if it is black
+                    if (color == FigureColor.Black) PawnIsDiagonalCheckingNextCell(rowIterator + 1, columnIterator + 1, color);
 
-                    if (ColorIsDifferent(color, rowIterator, columnIterator)) { break; }
-
-                    else
-                    {
-                        if (FigureIsNotDiagonal(rowIterator, columnIterator)) { break; }
-
-                        isCanCapture = false;
-
-                        if (_board[rowIterator, columnIterator].Figure == Figure.Pawn)
-                        {
-                            PawnIsDiagonalCheckingNextCell(rowIterator + 1, columnIterator + 1, color);
-
-                            break;
-                        }
-                    }
+                    break;
                 }
             }
         }
