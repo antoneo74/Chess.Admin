@@ -492,26 +492,62 @@
                         Width="210"
                         Binding="{Binding Description}"
                         Header="Fen" />
-                    <DataGridTextColumn
-                        Width="100"
-                        Binding="{Binding Strategy, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
-                        Header="Стратегия" />
-                    <DataGridTextColumn
-                        Width="100"
-                        Binding="{Binding Tactics, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
-                        Header="Тактика" />
-                    <DataGridTextColumn
-                        Width="100"
-                        Binding="{Binding Score, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
-                        Header="Счет" />
-                    <DataGridTextColumn
-                        Width="100"
-                        Binding="{Binding Technique, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
-                        Header="Техника" />
-                    <DataGridTextColumn
-                        Width="100"
-                        Binding="{Binding Grade, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}"
-                        Header="Оценка" />
+
+                    <DataGridTemplateColumn Width="100" Header="Стратегия">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Strategy, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="100" Header="Тактика">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Tactics, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="100" Header="Счет">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Score, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="100" Header="Техника">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Technique, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="100" Header="Оценка">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Grade, Converter={x:Static, conv:FuncValueConverters.GetValueFromIndexForDataGrid}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                 </DataGrid.Columns>
                 <DataGrid.Styles>
 

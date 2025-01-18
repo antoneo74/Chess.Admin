@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
@@ -253,7 +254,7 @@ namespace Chess.Admin.ViewModels
 
             _index = -1;
 
-            GetAllFens();
+            GetAllFensAsync();
 
             Add = ReactiveCommand.Create(AddFenAsync, this.WhenAnyValue(x => x.Fen, (fen) => !string.IsNullOrWhiteSpace(fen)));
 
@@ -263,9 +264,9 @@ namespace Chess.Admin.ViewModels
 
             ClearSearch = ReactiveCommand.Create(ClearSearchFields);
 
-            SaveChanges = ReactiveCommand.Create(UpdateAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
+            SaveChanges = ReactiveCommand.CreateFromTask(UpdateAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
 
-            DeleteFen = ReactiveCommand.Create(DeleteAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
+            DeleteFen = ReactiveCommand.CreateFromTask(DeleteAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
 
             StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;
         }
@@ -343,7 +344,7 @@ namespace Chess.Admin.ViewModels
                 }
                 AddMessage = "Fen успешно добавлен в базу";
 
-                GetAllFens();
+                await GetAllFensAsync();
             }
             catch (Exception)
             {
@@ -354,13 +355,13 @@ namespace Chess.Admin.ViewModels
         /// <summary>
         /// Get all fens from DB
         /// </summary>
-        private void GetAllFens()
+        private async Task GetAllFensAsync()
         {
             try
             {
                 using ChessDbContext context = new();
 
-                var fens = context.Fens.ToList();
+                var fens = await context.Fens.ToListAsync();
 
                 ListItems = new ObservableCollection<Fen>(fens);
             }
@@ -393,9 +394,10 @@ namespace Chess.Admin.ViewModels
             {
                 if (ListItems[i].Description == SearchingFen)
                 {
+                    Index = i;
+
                     SearchMessage = "Успешно! FEN доступен для редактирования";
 
-                    Index = i;
 
                     return;
                 }
@@ -421,7 +423,7 @@ namespace Chess.Admin.ViewModels
         /// <summary>
         /// Delete fen 
         /// </summary>
-        private async void DeleteAsync()
+        private async Task DeleteAsync()
         {
             ClearAllMessage();
             try
@@ -444,7 +446,7 @@ namespace Chess.Admin.ViewModels
 
                     EditMessage = "FEN успешно удален";
 
-                    GetAllFens();
+                    await GetAllFensAsync();
                 }
             }
             catch (Exception)
@@ -456,7 +458,7 @@ namespace Chess.Admin.ViewModels
         /// <summary>
         /// Uptade params of found fen
         /// </summary>
-        private async void UpdateAsync()
+        private async Task UpdateAsync()
         {
             ClearAllMessage();
             try
@@ -485,7 +487,7 @@ namespace Chess.Admin.ViewModels
 
                     EditMessage = "Параметры FEN успешно изменены";
 
-                    GetAllFens();
+                    await GetAllFensAsync();
                 }
             }
             catch (Exception)

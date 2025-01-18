@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Chess.Admin.Parser;
 using Chess.Admin.ViewModels;
@@ -10,6 +11,13 @@ namespace Chess.Admin.Views
         {
             InitializeComponent();
             Design.SetDataContext(this, new AddPageViewModel(new FenParser()));
+        }
+
+        public void  StrategyIncrement(object sender, AvaloniaPropertyChangedEventArgs args)
+        {
+            var cell = this.Find<DataGridTextColumn>("Strategy");
+
+            
         }
     }
 }

@@ -41,6 +41,8 @@ namespace Chess.Admin.ViewModels
 
         private Board? _board;
 
+        private bool _fileIsLoaded;
+
         private ObservableCollection<Cell> _cells;
 
         private ObservableCollection<Exercise> _listItems;
@@ -53,6 +55,13 @@ namespace Chess.Admin.ViewModels
         #endregion
 
         #region Public members
+
+        public bool FileIsLoaded
+        {
+            get => _fileIsLoaded;
+
+            set => this.RaiseAndSetIfChanged(ref _fileIsLoaded, value);
+        }
 
         public int Total
         {
@@ -189,7 +198,7 @@ namespace Chess.Admin.ViewModels
             }
         }
 
-        private async Task<IStorageFile?> DoOpenFilePickerAsync()
+        private static async Task<IStorageFile?> DoOpenFilePickerAsync()
         {
             if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop
                 || desktop.MainWindow?.StorageProvider is not { } provider)
@@ -221,6 +230,8 @@ namespace Chess.Admin.ViewModels
                 if (Index != -1 && ListItems.Count != 0)
                 {
                     _board = _parser.Parse(ListItems[Index].FenItem);
+
+                    FileIsLoaded = true;
                 }
                 else
                 {
@@ -252,6 +263,8 @@ namespace Chess.Admin.ViewModels
             Index = -1;
 
             ListItems.Clear();
+
+            FileIsLoaded = false;
 
             _board = new Board();
 
@@ -300,9 +313,9 @@ namespace Chess.Admin.ViewModels
             if (User == null) return;
             try
             {
-                var name = User.FirstName[..1].ToUpper() + User.FirstName.Substring(1).ToLower();
+                var name = User.FirstName[..1].ToUpper() + User.FirstName[1..].ToLower();
 
-                var surname = User.LastName[..1].ToUpper() + User.LastName.Substring(1).ToLower();
+                var surname = User.LastName[..1].ToUpper() + User.LastName[1..].ToLower();
 
                 using (var context = new ChessDbContext())
                 {
