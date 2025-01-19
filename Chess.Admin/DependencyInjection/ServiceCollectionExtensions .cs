@@ -1,7 +1,7 @@
-﻿using Chess.Admin.Parser;
+﻿using Chess.Admin.Core;
+using Chess.Admin.Parser;
 using Chess.Admin.Services;
 using Chess.Admin.ViewModels;
-using Chess.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chess.Admin.DependencyInjection
@@ -14,7 +14,11 @@ namespace Chess.Admin.DependencyInjection
 
             collection.AddSingleton<IAnalysis, BoardAnalysis>();
 
-            collection.AddTransient<MainViewModel>();
+            collection.AddTransient<CheckViewModel>();
+
+            collection.AddTransient<CreatePageViewModel>();
+
+            collection.AddTransient<StatisticViewModel>();
         }
     }
 }

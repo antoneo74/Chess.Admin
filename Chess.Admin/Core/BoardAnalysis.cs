@@ -1,6 +1,6 @@
 ﻿using Chess.Admin.Models;
 using Chess.Admin.Services;
-namespace Chess.Core
+namespace Chess.Admin.Core
 {
     public class BoardAnalysis() : IAnalysis
     {
@@ -352,7 +352,7 @@ namespace Chess.Core
         /// <param name="row"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        private bool CellCorrect(int row, int column)
+        private static bool CellCorrect(int row, int column)
         {
             return row >= 0 && row < 8 && column >= 0 && column < 8; ;
         }

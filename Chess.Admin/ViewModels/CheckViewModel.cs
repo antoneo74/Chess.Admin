@@ -15,7 +15,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -164,12 +163,18 @@ namespace Chess.Admin.ViewModels
 
             ClearCommand = ReactiveCommand.Create(Clear);
 
-            DataBaseCommand = ReactiveCommand.Create(AddResultToDataBaseAsync, this.WhenAnyValue(x => x.ListItems.Count, (count) => count != 0));
+            DataBaseCommand = ReactiveCommand.CreateFromTask(AddResultToDataBaseAsync, this.WhenAnyValue(x => x.ListItems.Count, (count) => count != 0));
         }
 
         #endregion
 
         #region Open file
+
+        /// <summary>
+        /// Open file dialog
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private async Task OpenFileAsync(CancellationToken token)
         {
             try
@@ -218,6 +223,7 @@ namespace Chess.Admin.ViewModels
         }
         #endregion
 
+        #region Methods
         /// <summary>
         /// Load new board from fen
         /// </summary>
@@ -308,7 +314,11 @@ namespace Chess.Admin.ViewModels
             WeaknessError = ListItems.Where(x => x.BWError == false).Count() + ListItems.Where(x => x.WWError == false).Count();
         }
 
-        private async void AddResultToDataBaseAsync()
+        /// <summary>
+        /// Adding results of exercises to database
+        /// </summary>
+        /// <returns></returns>
+        private async Task AddResultToDataBaseAsync()
         {
             if (User == null) return;
             try
@@ -350,5 +360,6 @@ namespace Chess.Admin.ViewModels
                 Message = "Что-то пошло не так";
             }
         }
+        #endregion
     }
 }

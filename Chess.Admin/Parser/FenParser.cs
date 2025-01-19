@@ -23,7 +23,7 @@ namespace Chess.Admin.Parser
             // Remove spaces from start and end of string
             Fen = fen.Trim();
 
-            // if there are spaces in the middle of the line, split sting and take the first substring
+            // if there are spaces in the middle of the line, split string and take the first substring
             Fen = Fen.Split(' ')[0];
 
             _board = new Board();

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
@@ -75,7 +76,7 @@ namespace Chess.Admin.ViewModels
 
             _common = true;
 
-            ShowAll = ReactiveCommand.Create(GetPeople);
+            ShowAll = ReactiveCommand.CreateFromTask(GetPeople);
 
             ClearCommand = ReactiveCommand.Create(Clear, this.WhenAnyValue(
                 x => x.People,
@@ -83,14 +84,14 @@ namespace Chess.Admin.ViewModels
                 x => x.Surname,
                 (people, name, surname) => people.Count != 0 || !string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(surname)));
 
-            UpdateCommand = ReactiveCommand.Create(Update, this.WhenAnyValue(x => x.People, p => p.Count != 0));
+            UpdateCommand = ReactiveCommand.CreateFromTask(Update, this.WhenAnyValue(x => x.People, p => p.Count != 0));
 
-            SearchPersonCommand = ReactiveCommand.Create(SearchPersonAsync, this.WhenAnyValue(
+            SearchPersonCommand = ReactiveCommand.CreateFromTask(SearchPersonAsync, this.WhenAnyValue(
                 x => x.Name,
                 x => x.Surname,
                 (name, surname) => !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(surname)));
 
-            ClearStatisticCommand = ReactiveCommand.Create(ClearStatistic, this.WhenAnyValue(
+            ClearStatisticCommand = ReactiveCommand.CreateFromTask(ClearStatistic, this.WhenAnyValue(
                 x => x.Name,
                 x => x.Surname,
                 x => x.IsFound,
@@ -99,7 +100,7 @@ namespace Chess.Admin.ViewModels
         #endregion
 
         #region Helper functions
-        private async void ClearStatistic()
+        private async Task ClearStatistic()
         {
             try
             {
@@ -132,7 +133,7 @@ namespace Chess.Admin.ViewModels
             }
         }
 
-        private async void SearchPersonAsync()
+        private async Task SearchPersonAsync()
         {
             try
             {
@@ -161,9 +162,9 @@ namespace Chess.Admin.ViewModels
             }
         }
 
-        private void Update()
+        private async Task Update()
         {
-            GetPeople();
+            await GetPeople();
         }
 
         private void Clear()
@@ -179,13 +180,15 @@ namespace Chess.Admin.ViewModels
             IsFound = false;
         }
 
-        private void GetPeople()
+        private async Task GetPeople()
         {
             try
             {
                 using ChessDbContext context = new();
 
-                People = new ObservableCollection<Person>([.. context.Persons]);
+                var list = await context.Persons.ToListAsync();
+
+                People = new ObservableCollection<Person>(list);
 
                 Message = People.Count == 0 ? "Список пуст" : "Успешно";
             }

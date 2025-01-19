@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Chess.Admin.Extensions;
 using ChessDB;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Chess.Admin.ViewModels
 {
@@ -112,11 +114,11 @@ namespace Chess.Admin.ViewModels
 
             Strategy = Tactics = Score = Technique = Grade = -1;
 
-            _fenList = new ObservableCollection<string>();
+            _fenList = [];
 
             Clear = ReactiveCommand.Create(PageClear);
 
-            CreateList = ReactiveCommand.Create(CreateExercisesList, this.WhenAnyValue(x => x.Count, count => count != 0));
+            CreateList = ReactiveCommand.CreateFromTask(CreateExercisesList, this.WhenAnyValue(x => x.Count, count => count != 0));
 
             CreateFile = ReactiveCommand.Create(CreateExercisesFile, this.WhenAnyValue(x => x.FenList.Count, count => count != 0));
         }
@@ -178,42 +180,41 @@ namespace Chess.Admin.ViewModels
             return sb.ToString();
         }
 
-        private void CreateExercisesList()
+        private async Task CreateExercisesList()
         {
             try
             {
-                using (ChessDbContext context = new())
+                using ChessDbContext context = new();
+
+                var list = context.Fens.Select(x => x);
+                if (Strategy != -1)
                 {
-                    var list = context.Fens.Select(x => x);
-                    if (Strategy != -1)
-                    {
-                        list = list.Where(x => x.Strategy == Strategy);
-                    }
-                    if (Tactics != -1)
-                    {
-                        list = list.Where(x => x.Tactics == Tactics);
-                    }
-                    if (Score != -1)
-                    {
-                        list = list.Where(x => x.Score == Score);
-                    }
-                    if (Technique != -1)
-                    {
-                        list = list.Where(x => x.Technique == Technique);
-                    }
-                    if (Grade != -1)
-                    {
-                        list = list.Where(x => x.Grade == Grade);
-                    }
-
-                    var filter = list.Select(x => x.Description).ToList();
-
-                    filter.Shuffle();
-
-                    FenList = new ObservableCollection<string>(filter.Take(Count));
-
-                    Message = FenList.Count != 0 ? "Список успешно подготовлен" : "Список пуст";
+                    list = list.Where(x => x.Strategy == Strategy);
                 }
+                if (Tactics != -1)
+                {
+                    list = list.Where(x => x.Tactics == Tactics);
+                }
+                if (Score != -1)
+                {
+                    list = list.Where(x => x.Score == Score);
+                }
+                if (Technique != -1)
+                {
+                    list = list.Where(x => x.Technique == Technique);
+                }
+                if (Grade != -1)
+                {
+                    list = list.Where(x => x.Grade == Grade);
+                }
+
+                var filter = await list.Select(x => x.Description).ToListAsync();
+
+                filter.Shuffle();
+
+                FenList = new ObservableCollection<string>(filter.Take(Count));
+
+                Message = FenList.Count != 0 ? "Список успешно подготовлен" : "Список пуст";
             }
             catch (Exception)
             {

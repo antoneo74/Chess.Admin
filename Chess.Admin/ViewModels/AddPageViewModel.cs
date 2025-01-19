@@ -46,7 +46,7 @@ namespace Chess.Admin.ViewModels
         private ObservableCollection<Fen> _listItems;
         private ObservableCollection<Cell> _cells;
         private int _index;
-        private readonly IParser _parser;
+        private readonly IParser? _parser;
         private string _message = string.Empty;
         #endregion
 
@@ -241,8 +241,9 @@ namespace Chess.Admin.ViewModels
         public ReactiveCommand<Unit, Unit> DeleteFen { get; }
         #endregion
 
-        #region Constructor
-        public AddPageViewModel(IParser parser)
+        #region Constructor (Fabric method)
+
+        private AddPageViewModel(IParser? parser)
         {
             _parser = parser;
 
@@ -254,9 +255,7 @@ namespace Chess.Admin.ViewModels
 
             _index = -1;
 
-            GetAllFensAsync();
-
-            Add = ReactiveCommand.Create(AddFenAsync, this.WhenAnyValue(x => x.Fen, (fen) => !string.IsNullOrWhiteSpace(fen)));
+            Add = ReactiveCommand.CreateFromTask(AddFenAsync, this.WhenAnyValue(x => x.Fen, (fen) => !string.IsNullOrWhiteSpace(fen)));
 
             ClearAdd = ReactiveCommand.Create(ClearAddFields);
 
@@ -268,8 +267,22 @@ namespace Chess.Admin.ViewModels
 
             DeleteFen = ReactiveCommand.CreateFromTask(DeleteAsync, this.WhenAnyValue(x => x.IsFound, (found) => found == true));
 
-            StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;
+            StrategyEdit = TacticsEdit = ScoreEdit = TechniqueEdit = GradeEdit = -1;            
         }
+
+        private async Task<AddPageViewModel> InitializeAsync()
+        {
+            await GetAllFensAsync();
+
+            return this;
+        }
+
+        public static Task<AddPageViewModel> CreateAsync(IParser? parser)
+        {
+            var ret = new AddPageViewModel(parser);
+
+            return ret.InitializeAsync();
+        }        
         #endregion
 
         #region Helpers functions        
@@ -315,7 +328,7 @@ namespace Chess.Admin.ViewModels
         /// <summary>
         /// Add new fen to DB
         /// </summary>
-        private async void AddFenAsync()
+        private async Task AddFenAsync()
         {
             ClearAllMessage();
 
@@ -384,7 +397,6 @@ namespace Chess.Admin.ViewModels
 
             if (!SearchingFen.IsCorrect())
             {
-
                 SearchMessage = "FEN имеет некорректный формат";
 
                 return;
@@ -398,13 +410,16 @@ namespace Chess.Admin.ViewModels
 
                     SearchMessage = "Успешно! FEN доступен для редактирования";
 
-
                     return;
                 }
             }
             SearchMessage = "FEN отсутствует в базе";
         }
-
+        
+        /// <summary>
+        /// Method initializes edit fields when fen is selected in table or finded in search block 
+        /// </summary>
+        /// <param name="fen"></param>
         private void FillingEditFields(Fen fen)
         {
             FenEdit = fen.Description;
